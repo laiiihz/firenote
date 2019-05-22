@@ -3,6 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:firenote/model/appModel.dart';
 import 'package:firenote/menu/SettingsColor.dart';
 import 'DeveloperMode.dart';
+
 class SettingsPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _SettingsState();
@@ -45,26 +46,40 @@ class _SettingsState extends State<SettingsPage> {
                     size: 35,
                   ),
                   title: Text('主题色'),
-                  subtitle: model.isDarkModeOn ? Text('不可用') : Text(model.colorName),
+                  subtitle:
+                      model.isDarkModeOn ? Text('不可用') : Text(model.colorName),
                   trailing: MaterialButton(
-                    onPressed: model.isDarkModeOn ? null : () {
-                      Navigator.push(context, new MaterialPageRoute(builder: (context)=>new SettingsColorPage()));
-                    },
+                    onPressed: model.isDarkModeOn
+                        ? null
+                        : () {
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) =>
+                                        new SettingsColorPage()));
+                          },
                     child: Text(model.colorName),
                     color: model.primaryColor,
                   ),
                 ),
               ),
-              SizedBox(height: 100,),
-              Card(child: MaterialButton(
-                child: ListTile(
-                  leading: Icon(Icons.developer_mode),
-                  title: Text('实验性功能'),
+              SizedBox(
+                height: 100,
+              ),
+              Card(
+                child: MaterialButton(
+                  child: ListTile(
+                    leading: Icon(Icons.developer_mode),
+                    title: Text('实验性功能'),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new DeveloperModePage()));
+                  },
                 ),
-                onPressed: () {
-                  Navigator.push(context, new MaterialPageRoute(builder: (context)=>new DeveloperModePage()));
-                },
-              ),),
+              ),
             ],
           ),
         );
