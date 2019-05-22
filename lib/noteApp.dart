@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
-class NoteApp extends StatelessWidget{
+import 'package:scoped_model/scoped_model.dart';
+import 'model/appModel.dart';
+
+class NoteApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return MaterialApp(
-      title: 'FireNote',
-      home: HomePage(),
+    return ScopedModel<AppModel>(
+      model: AppModel(),
+      child: ScopedModelDescendant<AppModel>(
+        builder: (context, child, model) {
+          return MaterialApp(
+            title: 'fireNote',
+            home: HomePage(),
+            theme: model.appTheme,
+          );
+        },
+      ),
     );
   }
-
 }
