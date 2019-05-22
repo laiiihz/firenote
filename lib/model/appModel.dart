@@ -1,8 +1,6 @@
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/material.dart';
-
 class AppModel extends Model {
-
   ThemeData _appTheme = ThemeData.light();
   get appTheme => _appTheme;
 

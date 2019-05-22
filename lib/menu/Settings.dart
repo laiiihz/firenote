@@ -3,13 +3,15 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:firenote/model/appModel.dart';
 import 'package:firenote/menu/SettingsColor.dart';
 import 'DeveloperMode.dart';
-
 class SettingsPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _SettingsState();
 }
 
 class _SettingsState extends State<SettingsPage> {
+
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -77,6 +79,17 @@ class _SettingsState extends State<SettingsPage> {
                         context,
                         new MaterialPageRoute(
                             builder: (context) => new DeveloperModePage()));
+                  },
+                ),
+              ),
+              Card(
+                child: MaterialButton(
+                  child: ListTile(
+                    leading: Icon(Icons.developer_mode),
+                    title: Text('shared test'),
+                  ),
+                  onPressed: () {
+
                   },
                 ),
               ),

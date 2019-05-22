@@ -3,6 +3,7 @@ import 'menu/About.dart';
 import 'menu/Settings.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'model/appModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,21 +25,24 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
     // TODO: implement initState
     super.initState();
 
+    /****/
+
+
     _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 1))
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500))
           ..addListener(() {
             setState(() {});
           });
 
     _animateIcon =
-        Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
+        Tween<double>(begin: 0.0, end: 1).animate(_animationController);
 
     _animateColor = ColorTween(begin: Colors.blue, end: Colors.red).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: Interval(
           0.00,
-          1.00,
+          0.5,
           curve: _curve,
         ),
       ),
@@ -51,7 +55,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
       parent: _animationController,
       curve: Interval(
         0.0,
-        0.75,
+        0.5,
         curve: _curve,
       ),
     ));

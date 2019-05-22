@@ -6,7 +6,6 @@ import 'model/appModel.dart';
 class NoteApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return ScopedModel<AppModel>(
       model: AppModel(),
       child: ScopedModelDescendant<AppModel>(
@@ -20,4 +19,5 @@ class NoteApp extends StatelessWidget {
       ),
     );
   }
+
 }
