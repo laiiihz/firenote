@@ -3,7 +3,7 @@ import 'menu/About.dart';
 import 'menu/Settings.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'model/appModel.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:localstorage/localstorage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,14 +19,12 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   Animation<Color> _animateColor;
   Animation<double> _translateButton;
   Curve _curve = Curves.easeOut;
-
+  final LocalStorage localStorage=new LocalStorage('testKey');
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    /****/
-
+    print('run here');
 
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500))
@@ -105,16 +103,16 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
               PopupMenuButton(
                 tooltip: '菜单',
                 itemBuilder: (BuildContext context) =>
-                    <PopupMenuEntry<_menuValue>>[
-                      PopupMenuItem<_menuValue>(
-                        value: _menuValue.settings,
-                        child: Text('设置'),
-                      ),
-                      PopupMenuItem<_menuValue>(
-                        value: _menuValue.about,
-                        child: Text('关于'),
-                      ),
-                    ],
+                <PopupMenuEntry<_menuValue>>[
+                  PopupMenuItem<_menuValue>(
+                    value: _menuValue.settings,
+                    child: Text('设置'),
+                  ),
+                  PopupMenuItem<_menuValue>(
+                    value: _menuValue.about,
+                    child: Text('关于'),
+                  ),
+                ],
                 onSelected: (menuValue) {
                   switch (menuValue) {
                     case _menuValue.settings:
@@ -138,7 +136,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
             children: <Widget>[
               Transform(
                 transform:
-                Matrix4.translationValues( _translateButton.value , 0,0),
+                Matrix4.translationValues(_translateButton.value, 0, 0),
                 child: Container(
                   child: FloatingActionButton(
                     heroTag: 'btn3',
@@ -148,10 +146,12 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Transform(
                 transform:
-                Matrix4.translationValues( _translateButton.value , 0,0),
+                Matrix4.translationValues(_translateButton.value, 0, 0),
                 child: Container(
                   child: FloatingActionButton(
                     heroTag: 'btn2',
@@ -161,20 +161,24 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Transform(
                 transform:
-                  Matrix4.translationValues( _translateButton.value , 0,0),
-                  child: Container(
-                    child: FloatingActionButton(
-                      heroTag: 'btn1',
-                      onPressed: null,
-                      tooltip: 'Inbox',
-                      child: Icon(Icons.inbox),
-                    ),
+                Matrix4.translationValues(_translateButton.value, 0, 0),
+                child: Container(
+                  child: FloatingActionButton(
+                    heroTag: 'btn1',
+                    onPressed: null,
+                    tooltip: 'Inbox',
+                    child: Icon(Icons.inbox),
                   ),
+                ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               FloatingActionButton(
                 heroTag: 'btn0',
                 onPressed: animate,
@@ -186,6 +190,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
               ),
             ],
           ),
+
         );
       },
     );

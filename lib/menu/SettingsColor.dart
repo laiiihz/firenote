@@ -52,6 +52,7 @@ class _SettingsColorState extends State<SettingsColorPage> {
             trailing: RaisedButton(
               onPressed: () {
                 model.setPrimaryColor(color,colorName);
+
               },
               color: color,
             ),
