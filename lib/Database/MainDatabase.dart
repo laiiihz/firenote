@@ -1,0 +1,92 @@
+import 'package:sqflite/sqflite.dart';
+
+final String tableNote = 'note';
+final String columnId = 'id';
+final String columnTitle = 'title';
+final String columnText = 'text';
+final String columnColor = 'color';
+
+class FireNote {
+  int id;
+  String title;
+  String text;
+  int color;
+
+  //
+  Map<String, dynamic> toMap() {
+    var map = <String, dynamic>{
+      columnTitle: title,
+      columnText: text,
+      columnColor: color,
+    };
+    if (id != null) map[columnId] = id;
+    return map;
+  }
+
+  FireNote();
+
+  FireNote.fromMap(Map<String, dynamic> map) {
+    id = map[columnId];
+    title = map[columnTitle];
+    text = map[columnText];
+    color = map[columnColor];
+  }
+}
+
+class NoteProvider {
+  Database db;
+
+  Future open(String path) async {
+    db = await openDatabase(path, version: 1,
+        onCreate: (Database db, int ver) async {
+      await db.execute('''
+      create table $tableNote(
+      $columnId integer primary key autoincrement,
+      $columnTitle text not null,
+      $columnText text,
+      $columnColor integer not null
+      )
+      ''');
+    });
+    print(db);
+  }
+
+  //插入操作
+  Future<FireNote> insert(FireNote fireNote) async {
+    fireNote.id = await db.insert(tableNote, fireNote.toMap());
+    return fireNote;
+  }
+
+  Future<FireNote> getFireNote(int id) async {
+    List<Map> maps = await db.query(tableNote,
+        columns: [columnId, columnTitle, columnText, columnColor],
+        where: '$columnId=?',
+        whereArgs: [id]);
+    if (maps.length > 0) {
+      return FireNote.fromMap(maps.first);
+    }
+    return null;
+  }
+
+  Future<int> delete(int id) async {
+    return await db.delete(tableNote, where: '$columnId=?', whereArgs: [id]);
+  }
+
+  Future<int> update(FireNote fireNote) async {
+    return await db.update(
+      tableNote,
+      fireNote.toMap(),
+      where: '$columnId=?',
+      whereArgs: [fireNote.id],
+    );
+  }
+
+  Future close() async => db.close();
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return db.toString();
+  }
+
+}

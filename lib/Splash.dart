@@ -28,7 +28,7 @@ class _SplashState extends State<SplashPage> {
       model.setDarkMode(onValue ?? false);
     });
 
-    new Future.delayed(Duration(milliseconds: 500), go2Home);
+    new Future.delayed(Duration(milliseconds: 1000    ), go2Home);
   }
 
   @override

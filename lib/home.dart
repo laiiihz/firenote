@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'menu/About.dart';
 import 'menu/Settings.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'model/appModel.dart';
+import 'package:sqflite/sqflite.dart';
+import 'Database/MainDatabase.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,6 +15,12 @@ class HomePage extends StatefulWidget {
 enum _menuValue { about, settings }
 
 class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
+  ///*** DATABASE***/
+
+  NoteProvider _noteProvider = NoteProvider();
+
+  /// *DATABASE***/
+
   bool _floatingIsOpened = false;
   AnimationController _animationController;
   Animation<double> _animateIcon;
@@ -187,6 +196,42 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                 ),
               ),
             ],
+          ),
+          body: Center(
+            child: Row(
+              children: <Widget>[
+                RaisedButton(
+                  onPressed: () async {
+                    var databasePath = await getDatabasesPath();
+                    var me=_noteProvider.open(join(databasePath, 'app.db'));
+                    test()async{
+                      FireNote _fireNote = FireNote();
+                      _fireNote.color = 0xffffffff;
+                      _fireNote.title = 'testtest';
+                      _fireNote.text = 'fawefawegawge';
+                      _fireNote.id=1003;
+                      FireNote fireNote = await _noteProvider.insert(_fireNote);
+                      print(fireNote.id);
+                    }
+                    me.then((value){
+                      test();
+                    });
+
+                  },
+                ),
+                SizedBox(
+                  width: 100,
+                ),
+                RaisedButton(
+                  onPressed: () async {
+                    Future<FireNote> test=_noteProvider.getFireNote(1003);
+                    test.then((onValue){
+                      print(onValue.id.toString()+onValue.text+onValue.title);
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },
