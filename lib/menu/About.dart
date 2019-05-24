@@ -25,7 +25,8 @@ class _AboutState extends State<AboutPage> {
               ),
             ),
           ),
-          SliverList(delegate: SliverChildListDelegate(<Widget>[
+          SliverList(
+              delegate: SliverChildListDelegate(<Widget>[
             Card(child: Text('test')),
           ])),
         ],

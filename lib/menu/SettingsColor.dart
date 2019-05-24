@@ -47,12 +47,11 @@ class _SettingsColorState extends State<SettingsColorPage> {
           child: ListTile(
             title: Text(
               colorName,
-              style: TextStyle(color: color,fontSize: 20),
+              style: TextStyle(color: color, fontSize: 20),
             ),
             trailing: RaisedButton(
               onPressed: () {
-                model.setPrimaryColor(color,colorName);
-
+                model.setPrimaryColor(color, colorName);
               },
               color: color,
             ),

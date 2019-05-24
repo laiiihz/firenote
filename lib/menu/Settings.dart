@@ -3,15 +3,14 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:firenote/model/appModel.dart';
 import 'package:firenote/menu/SettingsColor.dart';
 import 'DeveloperMode.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class SettingsPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _SettingsState();
 }
 
 class _SettingsState extends State<SettingsPage> {
-
-
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -38,6 +37,13 @@ class _SettingsState extends State<SettingsPage> {
                       value: model.isDarkModeOn,
                       onChanged: (value) {
                         model.setDarkMode(value);
+                        _sharedDark() async {
+                          SharedPreferences sh =
+                              await SharedPreferences.getInstance();
+                          sh.setBool('darkMode', value);
+                        }
+
+                        _sharedDark();
                       }),
                 ),
               ),
@@ -88,9 +94,7 @@ class _SettingsState extends State<SettingsPage> {
                     leading: Icon(Icons.developer_mode),
                     title: Text('shared test'),
                   ),
-                  onPressed: () {
-
-                  },
+                  onPressed: () {},
                 ),
               ),
             ],
