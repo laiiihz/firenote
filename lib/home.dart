@@ -37,23 +37,24 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
-    AppModel model=ScopedModel.of(context);
+    AppModel model = ScopedModel.of(context);
     getPath() async {
       var databasePath = await getDatabasesPath();
       var me = _noteProvider.open(Path.join(databasePath, 'app.db'));
       List<FireNote> tempNotes = [];
       me.then((value) async {
         tempNotes = await _noteProvider.getAllNote();
-      }).then((n){
-        FireNote tempNote=FireNote();
-        tempNote.color=0x33ffffff;
-        tempNote.text='右下角点击开始新建';
-        tempNote.id=9999999;
-        tempNote.title='欢迎使用';
-        if(tempNotes==null){
-          tempNotes=[tempNote];
+      }).then((n) {
+        FireNote tempNote = FireNote();
+        tempNote.color = 0x33ffffff;
+        tempNote.text = '右下角点击开始新建';
+        tempNote.id = 9999999;
+        tempNote.title = '欢迎使用';
+        if (tempNotes == null) {
+          tempNotes = [tempNote];
           model.setNotes(tempNotes);
-        }else model.setNotes(tempNotes);
+        } else
+          model.setNotes(tempNotes);
       });
     }
 
@@ -230,18 +231,22 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
           ),
           body: ListView.builder(
             itemBuilder: (BuildContext context, int index) {
-              String temp=model.notes[index].text;
-              if(temp!=null)
-              if(temp.length>15)temp=temp.substring(0,15);
+              String temp = model.notes[index].text;
+              if (temp != null) if (temp.length > 15)
+                temp = temp.substring(0, 15);
               return Dismissible(
-                key: new Key(model.notes[index].id.toString()+Random().nextInt(1000).toString()),
+                key: new Key(model.notes[index].id.toString() +
+                    Random().nextInt(1000).toString()),
                 child: Card(
                   child: RaisedButton(
                     color: Color(model.notes[index].color),
                     onPressed: () {
                       model.setNoteTemp(model.notes[index]);
                       model.setId(index);
-                      Navigator.push(context, new MaterialPageRoute(builder: (context)=>new EditorWithKeyPage()));
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new EditorWithKeyPage()));
                     },
                     child: ListTile(
                       title: Text(model.notes[index].title),
@@ -249,13 +254,13 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                     ),
                   ),
                 ),
-                onDismissed: (direction){
+                onDismissed: (direction) {
                   _noteProvider.delete(model.notes[index].id);
                   model.deleteNote(index);
                 },
               );
             },
-            itemCount: model.notes==null?0:model.notes.length,
+            itemCount: model.notes == null ? 0 : model.notes.length,
           ),
         );
       },

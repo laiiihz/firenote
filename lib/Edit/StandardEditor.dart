@@ -3,8 +3,8 @@ import 'package:path/path.dart' as Path;
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firenote/Database/MainDatabase.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:firenote/model/appModel.dart';
+
 class StandardEditorPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _StandardEditorState();
@@ -12,13 +12,13 @@ class StandardEditorPage extends StatefulWidget {
 
 class _StandardEditorState extends State<StandardEditorPage> {
   Color _myColor = Color(0x44ffffff);
-  var _titleController=TextEditingController();
-  var _textController=TextEditingController();
-  ///***DATABASE***/
-  NoteProvider _noteProvider=NoteProvider();
-  ///***DATABASE***/
+  var _titleController = TextEditingController();
+  var _textController = TextEditingController();
 
+  ///***DATABASE***/
+  NoteProvider _noteProvider = NoteProvider();
 
+  ///***DATABASE***/
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +35,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
         constraints: BoxConstraints(minWidth: 60, minHeight: 60),
       );
     }
+
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -57,11 +58,17 @@ class _StandardEditorState extends State<StandardEditorPage> {
                               child: Row(
                                 children: <Widget>[
                                   _buildButton(Colors.pinkAccent),
-                                  SizedBox(width: 10,),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
                                   _buildButton(Colors.grey),
-                                  SizedBox(width: 10,),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
                                   _buildButton(Colors.blueGrey),
-                                  SizedBox(width: 10,),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
                                   _buildButton(Colors.green),
                                 ],
                               ),
@@ -71,11 +78,17 @@ class _StandardEditorState extends State<StandardEditorPage> {
                               child: Row(
                                 children: <Widget>[
                                   _buildButton(Colors.cyan),
-                                  SizedBox(width: 10,),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
                                   _buildButton(Colors.amberAccent),
-                                  SizedBox(width: 10,),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
                                   _buildButton(Colors.indigo),
-                                  SizedBox(width: 10,),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
                                   _buildButton(Colors.teal),
                                 ],
                               ),
@@ -92,27 +105,28 @@ class _StandardEditorState extends State<StandardEditorPage> {
           ),
           IconButton(
             icon: Icon(Icons.send),
-            onPressed: () async{
+            onPressed: () async {
               print(_titleController.text);
-              var databasePath=await getDatabasesPath();
-              var me=_noteProvider.open(Path.join(databasePath,'app.db'));
-              List<FireNote> notes=[];
-              FireNote fireNote=FireNote();
-              insertOp()async{
-                fireNote.text=_textController.text;
-                fireNote.title=_titleController.text;
-                fireNote.color=_myColor.value;
+              var databasePath = await getDatabasesPath();
+              var me = _noteProvider.open(Path.join(databasePath, 'app.db'));
+              List<FireNote> notes = [];
+              FireNote fireNote = FireNote();
+              insertOp() async {
+                fireNote.text = _textController.text;
+                fireNote.title = _titleController.text;
+                fireNote.color = _myColor.value;
                 await _noteProvider.insert(fireNote);
               }
-              me.then((value){
-                try{
+
+              me.then((value) {
+                try {
                   insertOp();
-                }catch(e){
+                } catch (e) {
                   print('fail');
                   print(e);
                 }
               });
-              AppModel model=ScopedModel.of(context);
+              AppModel model = ScopedModel.of(context);
               model.addNote(fireNote);
               Navigator.pop(context);
             },

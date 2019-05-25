@@ -1,6 +1,5 @@
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firenote/Database/MainDatabase.dart';
 
 class AppModel extends Model {
@@ -46,39 +45,44 @@ class AppModel extends Model {
     _iphoneStyleOn = value;
     notifyListeners();
   }
-  List<FireNote> _notes=[];
-  get notes=>_notes;
-  setNotes(List<FireNote> getNotes){
-    _notes=getNotes;
-    notifyListeners();
-  }
-  addNote(FireNote fireNote){
-    if(_notes==null)_notes.add(fireNote);
-    else _notes.insert(0, fireNote);
+
+  List<FireNote> _notes = [];
+  get notes => _notes;
+  setNotes(List<FireNote> getNotes) {
+    _notes = getNotes;
     notifyListeners();
   }
 
-  int _idMe=0;
-  get idMe=>_idMe;
-  setId(int id){
-    _idMe=id;
-    notifyListeners();
-  }
-  updateNote(FireNote note){
-    notes[_idMe]=note;
+  addNote(FireNote fireNote) {
+    if (_notes == null)
+      _notes.add(fireNote);
+    else
+      _notes.insert(0, fireNote);
     notifyListeners();
   }
 
-  deleteNote(index){
+  int _idMe = 0;
+  get idMe => _idMe;
+  setId(int id) {
+    _idMe = id;
+    notifyListeners();
+  }
+
+  updateNote(FireNote note) {
+    notes[_idMe] = note;
+    notifyListeners();
+  }
+
+  deleteNote(index) {
     _notes.removeAt(index);
     notifyListeners();
   }
 
-  FireNote _tempNote=FireNote();
-  get tempNote=>_tempNote;
-  setNoteTemp(FireNote fireNote){
-    _tempNote=fireNote;
-    print('realID:'+tempNote.id.toString());
+  FireNote _tempNote = FireNote();
+  get tempNote => _tempNote;
+  setNoteTemp(FireNote fireNote) {
+    _tempNote = fireNote;
+    print('realID:' + tempNote.id.toString());
     notifyListeners();
   }
 }
