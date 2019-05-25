@@ -6,6 +6,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'model/appModel.dart';
 import 'package:sqflite/sqflite.dart';
 import 'Database/MainDatabase.dart';
+import 'Edit/StandardEditor.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -147,9 +148,14 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                 child: Container(
                   child: FloatingActionButton(
                     heroTag: 'btn3',
-                    onPressed: null,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new StandardEditorPage()));
+                    },
                     tooltip: 'Inbox',
-                    child: Icon(Icons.inbox),
+                    child: Icon(Icons.add),
                   ),
                 ),
               ),
@@ -203,20 +209,20 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                 RaisedButton(
                   onPressed: () async {
                     var databasePath = await getDatabasesPath();
-                    var me=_noteProvider.open(join(databasePath, 'app.db'));
-                    test()async{
+                    var me = _noteProvider.open(join(databasePath, 'app.db'));
+                    test() async {
                       FireNote _fireNote = FireNote();
                       _fireNote.color = 0xffffffff;
                       _fireNote.title = 'testtest';
                       _fireNote.text = 'fawefawegawge';
-                      _fireNote.id=1003;
+                      _fireNote.id = 1003;
                       FireNote fireNote = await _noteProvider.insert(_fireNote);
                       print(fireNote.id);
                     }
-                    me.then((value){
+
+                    me.then((value) {
                       test();
                     });
-
                   },
                 ),
                 SizedBox(
@@ -224,9 +230,10 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                 ),
                 RaisedButton(
                   onPressed: () async {
-                    Future<FireNote> test=_noteProvider.getFireNote(1003);
-                    test.then((onValue){
-                      print(onValue.id.toString()+onValue.text+onValue.title);
+                    Future<FireNote> test = _noteProvider.getFireNote(1003);
+                    test.then((onValue) {
+                      print(
+                          onValue.id.toString() + onValue.text + onValue.title);
                     });
                   },
                 ),
