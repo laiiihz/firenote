@@ -17,15 +17,39 @@ class _SplashState extends State<SplashPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    AppModel model = ScopedModel.of(context);
+
     Future<bool> darkModeShared() async {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       return sharedPreferences.getBool('darkMode' ?? false);
     }
 
-    AppModel model = ScopedModel.of(context);
     darkModeShared().then((onValue) {
       model.setDarkMode(onValue ?? false);
+      if (!onValue) {
+        Future<int> themeColorShared() async {
+          SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
+          return sharedPreferences.getInt('themeColor' ?? Colors.blue.value);
+        }
+
+        themeColorShared().then((color) {
+          model.setPrimaryColor(
+              Color(color ?? Colors.blue.value) ?? Colors.blue,
+              color.toString() ?? '蓝色');
+        });
+      }
+    });
+
+    Future<bool> iphoneModeShared() async {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      return sharedPreferences.getBool('iphoneMode' ?? false);
+    }
+
+    iphoneModeShared().then((onValue) {
+      model.setIPhoneStyleOn(onValue ?? false);
     });
 
     new Future.delayed(Duration(milliseconds: 500), go2Home);

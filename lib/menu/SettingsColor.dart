@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firenote/model/appModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsColorPage extends StatefulWidget {
   @override
@@ -52,6 +53,12 @@ class _SettingsColorState extends State<SettingsColorPage> {
             trailing: RaisedButton(
               onPressed: () {
                 model.setPrimaryColor(color, colorName);
+                _sharedColor() async {
+                  SharedPreferences sh = await SharedPreferences.getInstance();
+                  sh.setInt('themeColor', color.value);
+                }
+
+                _sharedColor();
               },
               color: color,
             ),
