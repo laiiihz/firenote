@@ -28,11 +28,42 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   Animation<Color> _animateColor;
   Animation<double> _translateButton;
   Curve _curve = Curves.easeOut;
+
+  List<Widget> _widgetNotes=[];
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('run here');
+    List<FireNote> notes=[];
+    List<Widget> widgetNotes=[];
+    getPath()async{
+      var databasePath=await getDatabasesPath();
+      var me=_noteProvider.open(join(databasePath,'app.db'));
+      me.then((value)async{
+        notes=await _noteProvider.getAllNote();
+        for(int i=notes.length-1;i>=0;i--){
+          String temp=notes[i].text;
+          if(temp.length>15)temp=temp.substring(0,15);
+          widgetNotes.add(
+            Card(
+              child: RaisedButton(
+                color: Color(notes[i].color),
+                onPressed: (){},child: ListTile(
+                title: Text(notes[i].title),
+                subtitle: Text(temp),
+              ),),
+            ),
+          );
+          setState(() {
+            _widgetNotes=widgetNotes;
+          });
+        }
+      });
+    }
+
+    getPath();
+
 
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500))
@@ -203,42 +234,8 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
               ),
             ],
           ),
-          body: Center(
-            child: Row(
-              children: <Widget>[
-                RaisedButton(
-                  onPressed: () async {
-                    var databasePath = await getDatabasesPath();
-                    var me = _noteProvider.open(join(databasePath, 'app.db'));
-                    test() async {
-                      FireNote _fireNote = FireNote();
-                      _fireNote.color = 0xffffffff;
-                      _fireNote.title = 'testtest';
-                      _fireNote.text = 'fawefawegawge';
-                      _fireNote.id = 1003;
-                      FireNote fireNote = await _noteProvider.insert(_fireNote);
-                      print(fireNote.id);
-                    }
-
-                    me.then((value) {
-                      test();
-                    });
-                  },
-                ),
-                SizedBox(
-                  width: 100,
-                ),
-                RaisedButton(
-                  onPressed: () async {
-                    Future<FireNote> test = _noteProvider.getFireNote(1003);
-                    test.then((onValue) {
-                      print(
-                          onValue.id.toString() + onValue.text + onValue.title);
-                    });
-                  },
-                ),
-              ],
-            ),
+          body: ListView(
+            children: _widgetNotes,
           ),
         );
       },

@@ -81,6 +81,21 @@ class NoteProvider {
     );
   }
 
+  Future<List<FireNote>> getAllNote() async {
+    List<Map> maps = await db.query(
+      tableNote,
+      columns: [columnId,columnTitle,columnText,columnColor],
+    );
+
+    if(maps.length==0||maps.isEmpty||maps==null)return null;
+    List<FireNote> notes=[];
+    for(int i=0;i<maps.length;i++){
+      notes.add(FireNote.fromMap(maps[i]));
+    }
+
+    return notes;
+  }
+
   Future close() async => db.close();
 
   @override
@@ -88,5 +103,4 @@ class NoteProvider {
     // TODO: implement toString
     return db.toString();
   }
-
 }

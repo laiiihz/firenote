@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:scoped_model/scoped_model.dart';
-
+import 'package:firenote/Database/MainDatabase.dart';
+import 'package:sqflite/sqflite.dart';
 class StandardEditorPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _StandardEditorState();
@@ -8,22 +10,29 @@ class StandardEditorPage extends StatefulWidget {
 
 class _StandardEditorState extends State<StandardEditorPage> {
   Color _myColor = Colors.white;
-  Widget _buildButton(Color color) {
-    return RawMaterialButton(
-      onPressed: () {
-        setState(() {
-          _myColor = color;
-          Navigator.of(context).pop();
-        });
-      },
-      shape: CircleBorder(),
-      fillColor: color,
-      constraints: BoxConstraints(minWidth: 60, minHeight: 60),
-    );
-  }
+  var _titleController=TextEditingController();
+  var _textController=TextEditingController();
+  ///***DATABASE***/
+  NoteProvider _noteProvider=NoteProvider();
+  ///***DATABASE***/
+
+
 
   @override
   Widget build(BuildContext context) {
+    Widget _buildButton(Color color) {
+      return RawMaterialButton(
+        onPressed: () {
+          setState(() {
+            _myColor = color;
+            Navigator.of(context).pop();
+          });
+        },
+        shape: CircleBorder(),
+        fillColor: color,
+        constraints: BoxConstraints(minWidth: 60, minHeight: 60),
+      );
+    }
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -81,7 +90,29 @@ class _StandardEditorState extends State<StandardEditorPage> {
           ),
           IconButton(
             icon: Icon(Icons.send),
-            onPressed: () {},
+            onPressed: () async{
+              print(_titleController.text);
+              var databasePath=await getDatabasesPath();
+              var me=_noteProvider.open(join(databasePath,'app.db'));
+              List<FireNote> notes=[];
+              insertOp()async{
+                FireNote fireNote=FireNote();
+                fireNote.text=_textController.text;
+                fireNote.title=_titleController.text;
+                fireNote.color=_myColor.value;
+                await _noteProvider.insert(fireNote);
+              }
+              me.then((value){
+                try{
+                  insertOp();
+                }catch(e){
+                  print('fail');
+                  print(e);
+                }
+              });
+
+              Navigator.pop(context);
+            },
           ),
         ],
       ),
@@ -90,6 +121,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
           Padding(
             padding: EdgeInsets.all(5),
             child: TextField(
+              controller: _titleController,
               decoration: InputDecoration(
                 filled: true,
                 labelText: '标题',
@@ -104,6 +136,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
           Padding(
             padding: EdgeInsets.all(5),
             child: TextField(
+              controller: _textController,
               decoration: InputDecoration(
                 filled: true,
                 border: OutlineInputBorder(),
