@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as Path;
 import 'menu/About.dart';
 import 'menu/Settings.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -7,6 +7,8 @@ import 'model/appModel.dart';
 import 'package:sqflite/sqflite.dart';
 import 'Database/MainDatabase.dart';
 import 'Edit/StandardEditor.dart';
+import 'dart:math';
+import 'Edit/EditorWithKey.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -29,41 +31,33 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   Animation<double> _translateButton;
   Curve _curve = Curves.easeOut;
 
-  List<Widget> _widgetNotes=[];
+  List<Widget> widgetNotes = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    List<FireNote> notes=[];
-    List<Widget> widgetNotes=[];
-    getPath()async{
-      var databasePath=await getDatabasesPath();
-      var me=_noteProvider.open(join(databasePath,'app.db'));
-      me.then((value)async{
-        notes=await _noteProvider.getAllNote();
-        for(int i=notes.length-1;i>=0;i--){
-          String temp=notes[i].text;
-          if(temp.length>15)temp=temp.substring(0,15);
-          widgetNotes.add(
-            Card(
-              child: RaisedButton(
-                color: Color(notes[i].color),
-                onPressed: (){},child: ListTile(
-                title: Text(notes[i].title),
-                subtitle: Text(temp),
-              ),),
-            ),
-          );
-          setState(() {
-            _widgetNotes=widgetNotes;
-          });
-        }
+    AppModel model=ScopedModel.of(context);
+    getPath() async {
+      var databasePath = await getDatabasesPath();
+      var me = _noteProvider.open(Path.join(databasePath, 'app.db'));
+      List<FireNote> tempNotes = [];
+      me.then((value) async {
+        tempNotes = await _noteProvider.getAllNote();
+      }).then((n){
+        FireNote tempNote=FireNote();
+        tempNote.color=0x33ffffff;
+        tempNote.text='右下角点击开始新建';
+        tempNote.id=9999999;
+        tempNote.title='欢迎使用';
+        if(tempNotes==null){
+          tempNotes=[tempNote];
+          model.setNotes(tempNotes);
+        }else model.setNotes(tempNotes);
       });
     }
 
     getPath();
-
 
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500))
@@ -190,36 +184,36 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Transform(
-                transform:
-                    Matrix4.translationValues(_translateButton.value, 0, 0),
-                child: Container(
-                  child: FloatingActionButton(
-                    heroTag: 'btn2',
-                    onPressed: null,
-                    tooltip: 'Inbox',
-                    child: Icon(Icons.inbox),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Transform(
-                transform:
-                    Matrix4.translationValues(_translateButton.value, 0, 0),
-                child: Container(
-                  child: FloatingActionButton(
-                    heroTag: 'btn1',
-                    onPressed: null,
-                    tooltip: 'Inbox',
-                    child: Icon(Icons.inbox),
-                  ),
-                ),
-              ),
+//              SizedBox(
+//                height: 10,
+//              ),
+//              Transform(
+//                transform:
+//                    Matrix4.translationValues(_translateButton.value, 0, 0),
+//                child: Container(
+//                  child: FloatingActionButton(
+//                    heroTag: 'btn2',
+//                    onPressed: null,
+//                    tooltip: 'Inbox',
+//                    child: Icon(Icons.inbox),
+//                  ),
+//                ),
+//              ),
+//              SizedBox(
+//                height: 10,
+//              ),
+//              Transform(
+//                transform:
+//                    Matrix4.translationValues(_translateButton.value, 0, 0),
+//                child: Container(
+//                  child: FloatingActionButton(
+//                    heroTag: 'btn1',
+//                    onPressed: null,
+//                    tooltip: 'Inbox',
+//                    child: Icon(Icons.inbox),
+//                  ),
+//                ),
+//              ),
               SizedBox(
                 height: 10,
               ),
@@ -234,8 +228,34 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
               ),
             ],
           ),
-          body: ListView(
-            children: _widgetNotes,
+          body: ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              String temp=model.notes[index].text;
+              if(temp!=null)
+              if(temp.length>15)temp=temp.substring(0,15);
+              return Dismissible(
+                key: new Key(model.notes[index].id.toString()+Random().nextInt(1000).toString()),
+                child: Card(
+                  child: RaisedButton(
+                    color: Color(model.notes[index].color),
+                    onPressed: () {
+                      model.setNoteTemp(model.notes[index]);
+                      model.setId(index);
+                      Navigator.push(context, new MaterialPageRoute(builder: (context)=>new EditorWithKeyPage()));
+                    },
+                    child: ListTile(
+                      title: Text(model.notes[index].title),
+                      subtitle: Text(temp),
+                    ),
+                  ),
+                ),
+                onDismissed: (direction){
+                  _noteProvider.delete(model.notes[index].id);
+                  model.deleteNote(index);
+                },
+              );
+            },
+            itemCount: model.notes==null?0:model.notes.length,
           ),
         );
       },

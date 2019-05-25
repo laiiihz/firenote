@@ -93,7 +93,7 @@ class NoteProvider {
       notes.add(FireNote.fromMap(maps[i]));
     }
 
-    return notes;
+    return notes.reversed.toList();
   }
 
   Future close() async => db.close();

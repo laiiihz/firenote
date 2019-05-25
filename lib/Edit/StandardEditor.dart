@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as Path;
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firenote/Database/MainDatabase.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:firenote/model/appModel.dart';
 class StandardEditorPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _StandardEditorState();
 }
 
 class _StandardEditorState extends State<StandardEditorPage> {
-  Color _myColor = Colors.white;
+  Color _myColor = Color(0x44ffffff);
   var _titleController=TextEditingController();
   var _textController=TextEditingController();
   ///***DATABASE***/
@@ -68,13 +70,13 @@ class _StandardEditorState extends State<StandardEditorPage> {
                               padding: EdgeInsets.all(10),
                               child: Row(
                                 children: <Widget>[
-                                  _buildButton(Colors.pink),
+                                  _buildButton(Colors.cyan),
                                   SizedBox(width: 10,),
-                                  _buildButton(Colors.pink),
+                                  _buildButton(Colors.amberAccent),
                                   SizedBox(width: 10,),
-                                  _buildButton(Colors.pink),
+                                  _buildButton(Colors.indigo),
                                   SizedBox(width: 10,),
-                                  _buildButton(Colors.pink),
+                                  _buildButton(Colors.teal),
                                 ],
                               ),
                             ),
@@ -93,10 +95,10 @@ class _StandardEditorState extends State<StandardEditorPage> {
             onPressed: () async{
               print(_titleController.text);
               var databasePath=await getDatabasesPath();
-              var me=_noteProvider.open(join(databasePath,'app.db'));
+              var me=_noteProvider.open(Path.join(databasePath,'app.db'));
               List<FireNote> notes=[];
+              FireNote fireNote=FireNote();
               insertOp()async{
-                FireNote fireNote=FireNote();
                 fireNote.text=_textController.text;
                 fireNote.title=_titleController.text;
                 fireNote.color=_myColor.value;
@@ -110,7 +112,8 @@ class _StandardEditorState extends State<StandardEditorPage> {
                   print(e);
                 }
               });
-
+              AppModel model=ScopedModel.of(context);
+              model.addNote(fireNote);
               Navigator.pop(context);
             },
           ),
