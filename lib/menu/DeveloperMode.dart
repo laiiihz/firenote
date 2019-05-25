@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firenote/model/appModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DeveloperModePage extends StatefulWidget {
   @override
@@ -48,6 +49,13 @@ class _DeveloperModeState extends State<DeveloperModePage> {
                       value: model.iphoneStyleOn,
                       onChanged: (value) {
                         model.setIPhoneStyleOn(value);
+                        openIPhoneMode() async {
+                          SharedPreferences sh =
+                              await SharedPreferences.getInstance();
+                          sh.setBool('iphoneMode', value);
+                        }
+
+                        openIPhoneMode();
                       },
                     ),
                   ),
