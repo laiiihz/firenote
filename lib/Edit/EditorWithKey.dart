@@ -107,7 +107,7 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
               onPressed: () async{
                 print(_titleController.text);
                 var databasePath=await getDatabasesPath();
-                var me=_noteProvider.open(Path.join(databasePath,'app.db'));
+                var me=_noteProvider.open(Path.join(databasePath,'app-0-1.db'));
                 FireNote fireNote=FireNote();
                 insertOp()async{
                   fireNote.text=_textController.text;

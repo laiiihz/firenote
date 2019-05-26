@@ -40,7 +40,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
     AppModel model = ScopedModel.of(context);
     getPath() async {
       var databasePath = await getDatabasesPath();
-      var me = _noteProvider.open(Path.join(databasePath, 'app.db'));
+      var me = _noteProvider.open(Path.join(databasePath, 'app-0-1.db'));
       List<FireNote> tempNotes = [];
       me.then((value) async {
         tempNotes = await _noteProvider.getAllNote();
@@ -239,7 +239,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                     Random().nextInt(1000).toString()),
                 child: Card(
                   child: RaisedButton(
-                    color: Color(model.notes[index].color),
+                    color: Color(model.notes[index].color??Colors.blue),
                     onPressed: () {
                       model.setNoteTemp(model.notes[index]);
                       model.setId(index);
