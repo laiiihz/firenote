@@ -50,6 +50,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
         tempNote.text = '右下角点击开始新建';
         tempNote.id = 9999999;
         tempNote.title = '欢迎使用';
+        tempNote.timeNow=DateTime.now().millisecondsSinceEpoch;
         if (tempNotes == null) {
           tempNotes = [tempNote];
           model.setNotes(tempNotes);
@@ -200,21 +201,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 //                  ),
 //                ),
 //              ),
-//              SizedBox(
-//                height: 10,
-//              ),
-//              Transform(
-//                transform:
-//                    Matrix4.translationValues(_translateButton.value, 0, 0),
-//                child: Container(
-//                  child: FloatingActionButton(
-//                    heroTag: 'btn1',
-//                    onPressed: null,
-//                    tooltip: 'Inbox',
-//                    child: Icon(Icons.inbox),
-//                  ),
-//                ),
-//              ),
               SizedBox(
                 height: 10,
               ),
@@ -232,6 +218,9 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
           body: ListView.builder(
             itemBuilder: (BuildContext context, int index) {
               String temp = model.notes[index].text;
+              String tempDate=DateTime.fromMillisecondsSinceEpoch(model.notes[index].timeNow).toString();
+              String tempDatePartA=tempDate.substring(0,10);
+              String tempDatePartB=tempDate.substring(11,19);
               if (temp != null) if (temp.length > 15)
                 temp = temp.substring(0, 15);
               return Dismissible(
@@ -251,6 +240,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                     child: ListTile(
                       title: Text(model.notes[index].title),
                       subtitle: Text(temp),
+                      trailing: Text(tempDatePartA+'\n'+tempDatePartB),
                     ),
                   ),
                 ),

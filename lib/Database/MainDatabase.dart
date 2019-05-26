@@ -13,8 +13,8 @@ class FireNote {
   String title;
   String text;
   int color;
-  DateTime timeNow;
-  DateTime timeSet;
+  int timeNow;
+  int timeSet;
   //
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{

@@ -114,6 +114,7 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
                   fireNote.title=_titleController.text;
                   fireNote.color=_myColor.value;
                   fireNote.id=model.tempNote.id;
+                  fireNote.timeNow=DateTime.now().millisecondsSinceEpoch;
                   print('note id:'+fireNote.id.toString());
                   await _noteProvider.update(fireNote);
                 }
