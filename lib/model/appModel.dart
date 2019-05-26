@@ -1,7 +1,7 @@
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/material.dart';
 import 'package:firenote/Database/MainDatabase.dart';
-
+import 'package:flutter/services.dart';
 class AppModel extends Model {
   ThemeData _appTheme = ThemeData.light();
   get appTheme => _appTheme;
@@ -83,6 +83,16 @@ class AppModel extends Model {
   setNoteTemp(FireNote fireNote) {
     _tempNote = fireNote;
     print('realID:' + tempNote.id.toString());
+    notifyListeners();
+  }
+
+  bool _statusBarTransparent=false;
+  get statusBarTransparent=>_statusBarTransparent;
+
+  setStatusBarTransparent(bool transparent){
+    _statusBarTransparent=transparent;
+    SystemUiOverlayStyle systemUiOverlayStyle=SystemUiOverlayStyle(statusBarColor: transparent?Colors.transparent:Color(0x33000000));
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     notifyListeners();
   }
 }

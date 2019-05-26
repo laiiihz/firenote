@@ -19,6 +19,16 @@ class _SplashState extends State<SplashPage> {
     super.initState();
     AppModel model = ScopedModel.of(context);
 
+    Future<bool> transparentShared()async{
+      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+      return sharedPreferences.getBool('transparentMode'??false);
+    }
+
+
+    transparentShared().then((onValue){
+      model.setStatusBarTransparent(onValue??false);
+    });
+
     Future<bool> darkModeShared() async {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();

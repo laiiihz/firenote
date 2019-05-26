@@ -4,7 +4,7 @@ import 'package:firenote/model/appModel.dart';
 import 'package:firenote/menu/SettingsColor.dart';
 import 'DeveloperMode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter/services.dart';
 class SettingsPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _SettingsState();
@@ -50,8 +50,34 @@ class _SettingsState extends State<SettingsPage> {
               Card(
                 child: ListTile(
                   leading: Icon(
+                    model.statusBarTransparent
+                        ? Icons.fullscreen
+                        : Icons.fullscreen_exit,
+                    size: 35,
+                  ),
+                  title: Text('沉浸模式'),
+                  subtitle:
+                  model.statusBarTransparent ? Text('关闭沉浸模式') : Text('开启沉浸模式'),
+                  trailing: Switch(
+                      value: model.statusBarTransparent,
+                      onChanged: (value) {
+                        model.setStatusBarTransparent(value);
+                        _sharedDark() async {
+                          SharedPreferences sh =
+                          await SharedPreferences.getInstance();
+                          sh.setBool('transparentMode', value);
+                        }
+
+                        _sharedDark();
+                      }),
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  leading: Icon(
                     Icons.invert_colors,
                     size: 35,
+                    color: model.primaryColor,
                   ),
                   title: Text('主题色'),
                   subtitle:
@@ -88,6 +114,7 @@ class _SettingsState extends State<SettingsPage> {
                   },
                 ),
               ),
+
 
             ],
           ),
