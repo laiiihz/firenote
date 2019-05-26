@@ -119,14 +119,77 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
             child: ListView(
               children: <Widget>[
                 DrawerHeader(
-                  child: Container(
-                    padding: EdgeInsets.all(30),
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: CircleAvatar(
-                        child: Icon(Icons.person),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(30),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: CircleAvatar(
+                            radius: 30,
+                            child: Icon(Icons.person),
+                            backgroundColor: model.primaryColor,
+                          ),
+                        ),
                       ),
-                    ),
+                      Container(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: FlatButton(onPressed: (){}, child: Text('laihz',style: TextStyle(fontSize: 30))),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                MaterialButton(
+                  onPressed: () {
+                    model.setPage(0);
+                    Navigator.pop(context);
+                  },
+                  color: model.page == 0 ? model.primaryColor : null,
+                  child: ListTile(
+                    leading: Text('test'),
+                  ),
+                ),
+                MaterialButton(
+                  onPressed: () {
+                    model.setPage(1);
+                    Navigator.pop(context);
+                  },
+                  color: model.page == 1 ? model.primaryColor : null,
+                  child: ListTile(
+                    leading: Text('test'),
+                  ),
+                ),
+                MaterialButton(
+                  onPressed: () {
+                    model.setPage(2);
+                    Navigator.pop(context);
+                  },
+                  color: model.page == 2 ? model.primaryColor : null,
+                  child: ListTile(
+                    leading: Text('test'),
+                  ),
+                ),
+                MaterialButton(
+                  onPressed: () {
+                    model.setPage(3);
+                    Navigator.pop(context);
+                  },
+                  color: model.page == 3 ? model.primaryColor : null,
+                  child: ListTile(
+                    leading: Text('test'),
+                  ),
+                ),
+                MaterialButton(
+                  onPressed: () {
+                    model.setPage(4);
+                    Navigator.pop(context);
+                  },
+                  color: model.page == 4 ? model.primaryColor : null,
+                  child: ListTile(
+                    leading: Text('test'),
                   ),
                 ),
               ],
@@ -215,70 +278,97 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
               ),
             ],
           ),
-          body: ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              String temp = model.notes[index].text;
-              String tempDate = DateTime.fromMillisecondsSinceEpoch(
-                      model.notes[index].timeNow)
-                  .toString();
-              String tempDatePartA = tempDate.substring(0, 10);
-              String tempDatePartB = tempDate.substring(11, 19);
+          body: Builder(
+            builder: (BuildContext context) {
+              if (true) {
+                ;
+              }
+              switch (model.page) {
+                case 0:
+                  return ListView.builder(
+                    itemBuilder: (BuildContext context, int index) {
+                      String temp = model.notes[index].text;
+                      String tempDate = DateTime.fromMillisecondsSinceEpoch(
+                              model.notes[index].timeNow)
+                          .toString();
+                      String tempDatePartA = tempDate.substring(0, 10);
+                      String tempDatePartB = tempDate.substring(11, 19);
 
-              String tempDateSet=DateTime.fromMillisecondsSinceEpoch(model.notes[index].timeSet??0).toString();
-              String tempDateSetPartA = tempDateSet.substring(0, 10);
-              String tempDateSetPartB = tempDateSet.substring(11, 16);
-              if (temp != null) if (temp.length > 15)
-                temp = temp.substring(0, 15);
-              return Dismissible(
-                key: new Key(model.notes[index].id.toString() +
-                    Random().nextInt(1000).toString()),
-                child: Card(
-                  child: RaisedButton(
-                    color: Color(model.notes[index].color ?? Colors.blue),
-                    onPressed: () {
-                      model.setNoteTemp(model.notes[index]);
-                      model.setId(index);
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new EditorWithKeyPage()));
+                      String tempDateSet = DateTime.fromMillisecondsSinceEpoch(
+                              model.notes[index].timeSet ?? 0)
+                          .toString();
+                      String tempDateSetPartA = tempDateSet.substring(0, 10);
+                      String tempDateSetPartB = tempDateSet.substring(11, 16);
+                      if (temp != null) if (temp.length > 15)
+                        temp = temp.substring(0, 15);
+                      return Dismissible(
+                        key: new Key(model.notes[index].id.toString() +
+                            Random().nextInt(1000).toString()),
+                        child: Card(
+                          child: RaisedButton(
+                            color:
+                                Color(model.notes[index].color ?? Colors.blue),
+                            onPressed: () {
+                              model.setNoteTemp(model.notes[index]);
+                              model.setId(index);
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) =>
+                                          new EditorWithKeyPage()));
+                            },
+                            child: ListTile(
+                              title: Text(model.notes[index].title),
+                              subtitle: Text(temp),
+                              trailing: Text(
+                                  tempDateSetPartA + '\n' + tempDateSetPartB),
+                            ),
+                          ),
+                        ),
+                        background: Container(
+                          color: Colors.red,
+                          child: ListTile(
+                            leading: Icon(Icons.delete),
+                          ),
+                        ),
+                        secondaryBackground: Container(
+                          color: Colors.cyan,
+                          child: ListTile(
+                            trailing: Text(
+                              tempDatePartA + '\n' + tempDatePartB,
+                            ),
+                          ),
+                        ),
+                        onDismissed: (direction) {
+                          if (direction == DismissDirection.startToEnd) {
+                            _noteProvider.delete(model.notes[index].id);
+                            model.deleteNote(index);
+                            final snackBar =
+                                SnackBar(content: Icon(Icons.delete_forever));
+                            Scaffold.of(context).showSnackBar(snackBar);
+                          }
+                          if (direction == DismissDirection.endToStart) {
+                            final snackBar =
+                                SnackBar(content: Icon(Icons.tag_faces));
+                            Scaffold.of(context).showSnackBar(snackBar);
+                          }
+                        },
+                      );
                     },
-                    child: ListTile(
-                      title: Text(model.notes[index].title),
-                      subtitle: Text(temp),
-                      trailing: Text(tempDateSetPartA+'\n'+tempDateSetPartB),
-                    ),
-                  ),
-                ),
-                background: Container(
-                  color: Colors.red,
-                  child: ListTile(
-                    leading: Icon(Icons.delete),
-                  ),
-                ),
-                secondaryBackground: Container(
-                  color: Colors.cyan,
-                  child: ListTile(
-                    trailing: Text(
-                      tempDatePartA + '\n' + tempDatePartB,
-                    ),
-                  ),
-                ),
-                onDismissed: (direction) {
-                  if(direction==DismissDirection.startToEnd){
-                    _noteProvider.delete(model.notes[index].id);
-                    model.deleteNote(index);
-                    final snackBar = SnackBar(content: Icon(Icons.delete_forever));
-                    Scaffold.of(context).showSnackBar(snackBar);
-                  }
-                  if(direction==DismissDirection.endToStart){
-                    final snackBar = SnackBar(content: Icon(Icons.tag_faces));
-                    Scaffold.of(context).showSnackBar(snackBar);
-                  }
-                },
-              );
+                    itemCount: model.notes == null ? 0 : model.notes.length,
+                  );
+                case 1:
+                  return Text('test1');
+                case 2:
+                  return Text('test2');
+                case 3:
+                  return Text('test3');
+                case 4:
+                  return Text('test4');
+                case 5:
+                  return Text('test5');
+              }
             },
-            itemCount: model.notes == null ? 0 : model.notes.length,
           ),
         );
       },
