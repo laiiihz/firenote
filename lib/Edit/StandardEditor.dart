@@ -14,11 +14,40 @@ class _StandardEditorState extends State<StandardEditorPage> {
   Color _myColor = Color(0x44ffffff);
   var _titleController = TextEditingController();
   var _textController = TextEditingController();
-
+  DateTime _dateTime;
+  TimeOfDay _dateOfDay;
+  int _timeMillsec;
   ///***DATABASE***/
   NoteProvider _noteProvider = NoteProvider();
 
   ///***DATABASE***/
+
+  Future<Null> _showDatePicker(BuildContext context) async {
+    final DateTime _picker = await showDatePicker(
+      context: context,
+      initialDate: DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch-(TimeOfDay.now().minute+TimeOfDay.now().hour*60)*60*1000),
+      firstDate: DateTime(2019, 1, 1),
+      lastDate: DateTime(2099),
+    );
+
+    if(_picker!=null){
+      setState(() {
+        _dateTime=_picker;
+      });
+      print(_dateTime);
+    }
+  }
+
+  Future<Null> _showTimePicker(BuildContext context) async{
+    final TimeOfDay _timePicker=await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    if(_timePicker!=null){
+      setState(() {
+        _dateOfDay=_timePicker;
+        _timeMillsec=_dateTime.millisecondsSinceEpoch+(_dateOfDay.hour*60+_dateOfDay.minute)*60*1000;
+      });
+      print(_dateOfDay);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +72,11 @@ class _StandardEditorState extends State<StandardEditorPage> {
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.all(5),
-            child: IconButton(icon: Icon(Icons.date_range), onPressed:(){}),
+            child: IconButton(icon: Icon(Icons.date_range), onPressed: () {
+              _showTimePicker(context);
+              _showDatePicker(context);
+
+            }),
           ),
           Padding(
             padding: EdgeInsets.all(10),
@@ -112,18 +145,18 @@ class _StandardEditorState extends State<StandardEditorPage> {
             onPressed: () async {
               print(_titleController.text);
               var databasePath = await getDatabasesPath();
-              var me = _noteProvider.open(Path.join(databasePath, 'app-0-1.db'));
+              var me =
+                  _noteProvider.open(Path.join(databasePath, 'app-0-1.db'));
               List<FireNote> notes = [];
               FireNote fireNote = FireNote();
               insertOp() async {
                 fireNote.text = _textController.text;
                 fireNote.title = _titleController.text;
                 fireNote.color = _myColor.value;
-                fireNote.timeNow=DateTime.now().millisecondsSinceEpoch;
-                print(fireNote.timeNow);
-                print('dateTime now');
-                print(DateTime.now());
-                print(DateTime.now().millisecondsSinceEpoch);
+                fireNote.timeNow = DateTime.now().millisecondsSinceEpoch;
+                fireNote.timeSet = _timeMillsec;
+                print('dateTime set');
+                print(fireNote.timeSet);
                 await _noteProvider.insert(fireNote);
               }
 

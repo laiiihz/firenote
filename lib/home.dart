@@ -50,7 +50,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
         tempNote.text = '右下角点击开始新建';
         tempNote.id = 9999999;
         tempNote.title = '欢迎使用';
-        tempNote.timeNow=DateTime.now().millisecondsSinceEpoch;
+        tempNote.timeNow = DateTime.now().millisecondsSinceEpoch;
         if (tempNotes == null) {
           tempNotes = [tempNote];
           model.setNotes(tempNotes);
@@ -218,9 +218,15 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
           body: ListView.builder(
             itemBuilder: (BuildContext context, int index) {
               String temp = model.notes[index].text;
-              String tempDate=DateTime.fromMillisecondsSinceEpoch(model.notes[index].timeNow).toString();
-              String tempDatePartA=tempDate.substring(0,10);
-              String tempDatePartB=tempDate.substring(11,19);
+              String tempDate = DateTime.fromMillisecondsSinceEpoch(
+                      model.notes[index].timeNow)
+                  .toString();
+              String tempDatePartA = tempDate.substring(0, 10);
+              String tempDatePartB = tempDate.substring(11, 19);
+
+              String tempDateSet=DateTime.fromMillisecondsSinceEpoch(model.notes[index].timeSet??0).toString();
+              String tempDateSetPartA = tempDateSet.substring(0, 10);
+              String tempDateSetPartB = tempDateSet.substring(11, 16);
               if (temp != null) if (temp.length > 15)
                 temp = temp.substring(0, 15);
               return Dismissible(
@@ -228,7 +234,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                     Random().nextInt(1000).toString()),
                 child: Card(
                   child: RaisedButton(
-                    color: Color(model.notes[index].color??Colors.blue),
+                    color: Color(model.notes[index].color ?? Colors.blue),
                     onPressed: () {
                       model.setNoteTemp(model.notes[index]);
                       model.setId(index);
@@ -240,13 +246,35 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                     child: ListTile(
                       title: Text(model.notes[index].title),
                       subtitle: Text(temp),
-                      trailing: Text(tempDatePartA+'\n'+tempDatePartB),
+                      trailing: Text(tempDateSetPartA+'\n'+tempDateSetPartB),
+                    ),
+                  ),
+                ),
+                background: Container(
+                  color: Colors.red,
+                  child: ListTile(
+                    leading: Icon(Icons.delete),
+                  ),
+                ),
+                secondaryBackground: Container(
+                  color: Colors.cyan,
+                  child: ListTile(
+                    trailing: Text(
+                      tempDatePartA + '\n' + tempDatePartB,
                     ),
                   ),
                 ),
                 onDismissed: (direction) {
-                  _noteProvider.delete(model.notes[index].id);
-                  model.deleteNote(index);
+                  if(direction==DismissDirection.startToEnd){
+                    _noteProvider.delete(model.notes[index].id);
+                    model.deleteNote(index);
+                    final snackBar = SnackBar(content: Icon(Icons.delete_forever));
+                    Scaffold.of(context).showSnackBar(snackBar);
+                  }
+                  if(direction==DismissDirection.endToStart){
+                    final snackBar = SnackBar(content: Icon(Icons.tag_faces));
+                    Scaffold.of(context).showSnackBar(snackBar);
+                  }
                 },
               );
             },

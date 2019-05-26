@@ -4,7 +4,6 @@ import 'package:firenote/model/appModel.dart';
 import 'package:firenote/menu/SettingsColor.dart';
 import 'DeveloperMode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/services.dart';
 class SettingsPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _SettingsState();

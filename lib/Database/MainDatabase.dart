@@ -22,6 +22,7 @@ class FireNote {
       columnText: text,
       columnColor: color,
       columnTimeCreate:timeNow,
+      columnTimeSet:timeSet
     };
     if (id != null) map[columnId] = id;
     return map;
