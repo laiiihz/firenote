@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as Path;
 import 'package:scoped_model/scoped_model.dart';
@@ -16,7 +18,9 @@ class _StandardEditorState extends State<StandardEditorPage> {
   var _textController = TextEditingController();
   DateTime _dateTime;
   TimeOfDay _dateOfDay;
-  int _timeMillsec;
+  int _timeMillsec=DateTime.now().millisecondsSinceEpoch;
+  DateTime _nowTime=DateTime.now();
+  Timer countdownTimer;
   ///***DATABASE***/
   NoteProvider _noteProvider = NoteProvider();
 
@@ -25,30 +29,50 @@ class _StandardEditorState extends State<StandardEditorPage> {
   Future<Null> _showDatePicker(BuildContext context) async {
     final DateTime _picker = await showDatePicker(
       context: context,
-      initialDate: DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch-(TimeOfDay.now().minute+TimeOfDay.now().hour*60)*60*1000),
+      initialDate: DateTime.fromMillisecondsSinceEpoch(
+          DateTime.now().millisecondsSinceEpoch -
+              (TimeOfDay.now().minute + TimeOfDay.now().hour * 60) * 60 * 1000),
       firstDate: DateTime(2019, 1, 1),
       lastDate: DateTime(2099),
     );
 
-    if(_picker!=null){
+    if (_picker != null) {
       setState(() {
-        _dateTime=_picker;
+        _dateTime = _picker;
       });
       print(_dateTime);
     }
   }
 
-  Future<Null> _showTimePicker(BuildContext context) async{
-    final TimeOfDay _timePicker=await showTimePicker(context: context, initialTime: TimeOfDay.now());
-    if(_timePicker!=null){
+  Future<Null> _showTimePicker(BuildContext context) async {
+    final TimeOfDay _timePicker =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    if (_timePicker != null) {
       setState(() {
-        _dateOfDay=_timePicker;
-        _timeMillsec=_dateTime.millisecondsSinceEpoch+(_dateOfDay.hour*60+_dateOfDay.minute)*60*1000;
+        _dateOfDay = _timePicker;
+        _timeMillsec = _dateTime.millisecondsSinceEpoch +
+            (_dateOfDay.hour * 60 + _dateOfDay.minute) * 60 * 1000;
       });
       print(_dateOfDay);
     }
   }
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    countdownTimer =  new Timer.periodic(new Duration(seconds: 1), (timer) {
+      setState(() {
+        _nowTime=DateTime.now();
+      });
+    });
+    countdownTimer.tick;
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    countdownTimer.cancel();
+  }
   @override
   Widget build(BuildContext context) {
     Widget _buildButton(Color color) {
@@ -72,11 +96,12 @@ class _StandardEditorState extends State<StandardEditorPage> {
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.all(5),
-            child: IconButton(icon: Icon(Icons.date_range), onPressed: () {
-              _showTimePicker(context);
-              _showDatePicker(context);
-
-            }),
+            child: IconButton(
+                icon: Icon(Icons.date_range),
+                onPressed: () {
+                  _showTimePicker(context);
+                  _showDatePicker(context);
+                }),
           ),
           Padding(
             padding: EdgeInsets.all(10),
@@ -190,6 +215,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
               cursorColor: Colors.red,
               cursorWidth: 5,
               textInputAction: TextInputAction.next,
+              maxLength: 15,
             ),
           ),
           Padding(
@@ -203,6 +229,24 @@ class _StandardEditorState extends State<StandardEditorPage> {
               maxLines: 100,
               minLines: 20,
             ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(5),
+            child: Card(
+              child: ListTile(
+                leading: Text('创建时间:'+_nowTime.toString().substring(0,19)),
+              ),
+            ),
+
+          ),
+          Padding(
+            padding: EdgeInsets.all(5),
+            child: Card(
+              child: ListTile(
+                leading: Text('提醒时间:'+DateTime.fromMillisecondsSinceEpoch(_timeMillsec??0).toString().substring(0,16)),
+              ),
+            ),
+
           ),
         ],
       ),
