@@ -88,15 +88,7 @@ class _SettingsState extends State<SettingsPage> {
                   },
                 ),
               ),
-              Card(
-                child: MaterialButton(
-                  child: ListTile(
-                    leading: Icon(Icons.developer_mode),
-                    title: Text('shared test'),
-                  ),
-                  onPressed: () {},
-                ),
-              ),
+              
             ],
           ),
         );

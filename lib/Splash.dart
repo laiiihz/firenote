@@ -27,7 +27,7 @@ class _SplashState extends State<SplashPage> {
 
     darkModeShared().then((onValue) {
       model.setDarkMode(onValue ?? false);
-      if (!onValue) {
+      if (!(onValue??false)) {
         Future<int> themeColorShared() async {
           SharedPreferences sharedPreferences =
               await SharedPreferences.getInstance();
