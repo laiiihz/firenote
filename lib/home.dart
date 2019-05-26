@@ -9,7 +9,7 @@ import 'Database/MainDatabase.dart';
 import 'Edit/StandardEditor.dart';
 import 'dart:math';
 import 'Edit/EditorWithKey.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _HomeState();
@@ -19,11 +19,11 @@ enum _menuValue { about, settings }
 
 class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   ///*** DATABASE***/
-
   NoteProvider _noteProvider = NoteProvider();
 
   /// *DATABASE***/
 
+  final _userNameController = TextEditingController();
   bool _floatingIsOpened = false;
   AnimationController _animationController;
   Animation<double> _animateIcon;
@@ -136,60 +136,180 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                       Container(
                         child: Align(
                           alignment: Alignment.center,
-                          child: FlatButton(onPressed: (){}, child: Text('laihz',style: TextStyle(fontSize: 30))),
+                          child: FlatButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (value) {
+                                    return Dialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
+                                      child: Container(
+                                        padding: EdgeInsets.all(10),
+                                        color: Colors.transparent,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            ListTile(
+                                              title: Text(
+                                                '修改用户名',
+                                                style: TextStyle(fontSize: 25),
+                                              ),
+                                            ),
+                                            TextField(
+                                              controller: _userNameController,
+                                              decoration: InputDecoration(
+                                                labelText: '用户名',
+                                                filled: true,
+                                                border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                              ),
+                                              maxLength: 10,
+                                            ),
+                                            ButtonBar(
+                                              children: <Widget>[
+                                                FlatButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text('取消'),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                    )),
+                                                RaisedButton(
+                                                  onPressed: () {
+                                                    model.setUserName(
+                                                        _userNameController
+                                                            .text);
+
+                                                    setUserShared()async{
+                                                      SharedPreferences sh=await SharedPreferences.getInstance();
+                                                      sh.setString('userName', _userNameController.text??'fireNote');
+                                                    }
+                                                    setUserShared();
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text('修改'),
+                                                  color: model.primaryColor,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                            },
+                            child: Container(
+                              width: 120,
+                              child: Wrap(
+                                children: <Widget>[
+                                  Text(
+                                    model.userName,
+                                    style: TextStyle(fontSize: 25),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                MaterialButton(
-                  onPressed: () {
-                    model.setPage(0);
-                    Navigator.pop(context);
-                  },
-                  color: model.page == 0 ? model.primaryColor : null,
-                  child: ListTile(
-                    leading: Text('test'),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: MaterialButton(
+                    onPressed: () {
+                      model.setPage(0);
+                      Navigator.pop(context);
+                    },
+                    height: model.page == 0 ? 70 : 30,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(70)),
+                    color: model.page == 0 ? model.primaryColor : null,
+                    child: ListTile(
+                      leading: Icon(Icons.home),
+                      title: Text(
+                        '所有',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
                   ),
                 ),
-                MaterialButton(
-                  onPressed: () {
-                    model.setPage(1);
-                    Navigator.pop(context);
-                  },
-                  color: model.page == 1 ? model.primaryColor : null,
-                  child: ListTile(
-                    leading: Text('test'),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: MaterialButton(
+                    onPressed: () {
+                      model.setPage(1);
+                      Navigator.pop(context);
+                    },
+                    height: model.page == 1 ? 70 : 30,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(70)),
+                    color: model.page == 1 ? model.primaryColor : null,
+                    child: ListTile(
+                      leading: Text('test'),
+                    ),
                   ),
                 ),
-                MaterialButton(
-                  onPressed: () {
-                    model.setPage(2);
-                    Navigator.pop(context);
-                  },
-                  color: model.page == 2 ? model.primaryColor : null,
-                  child: ListTile(
-                    leading: Text('test'),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: MaterialButton(
+                    onPressed: () {
+                      model.setPage(2);
+                      Navigator.pop(context);
+                    },
+                    height: model.page == 2 ? 70 : 30,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(70)),
+                    color: model.page == 2 ? model.primaryColor : null,
+                    child: ListTile(
+                      leading: Text('test'),
+                    ),
                   ),
                 ),
-                MaterialButton(
-                  onPressed: () {
-                    model.setPage(3);
-                    Navigator.pop(context);
-                  },
-                  color: model.page == 3 ? model.primaryColor : null,
-                  child: ListTile(
-                    leading: Text('test'),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: MaterialButton(
+                    onPressed: () {
+                      model.setPage(3);
+                      Navigator.pop(context);
+                    },
+                    height: model.page == 3 ? 70 : 30,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(70)),
+                    color: model.page == 3 ? model.primaryColor : null,
+                    child: ListTile(
+                      leading: Text('test'),
+                    ),
                   ),
                 ),
-                MaterialButton(
-                  onPressed: () {
-                    model.setPage(4);
-                    Navigator.pop(context);
-                  },
-                  color: model.page == 4 ? model.primaryColor : null,
-                  child: ListTile(
-                    leading: Text('test'),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: MaterialButton(
+                    onPressed: () {
+                      model.setPage(4);
+                      Navigator.pop(context);
+                    },
+                    height: model.page == 4 ? 70 : 30,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(70)),
+                    color: model.page == 4 ? model.primaryColor : null,
+                    child: ListTile(
+                      leading: Text('test'),
+                    ),
                   ),
                 ),
               ],

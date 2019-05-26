@@ -23,10 +23,16 @@ class _SplashState extends State<SplashPage> {
       SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
       return sharedPreferences.getBool('transparentMode'??false);
     }
-
-
     transparentShared().then((onValue){
       model.setStatusBarTransparent(onValue??false);
+    });
+
+    Future<String> userNameShared()async {
+      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+      return sharedPreferences.getString('userName'??'fireNote');
+    }
+    userNameShared().then((onValue){
+      model.setUserName(onValue??'fireNote');
     });
 
     Future<bool> darkModeShared() async {

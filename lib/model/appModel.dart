@@ -102,4 +102,11 @@ class AppModel extends Model {
     _page=pageMe;
     notifyListeners();
   }
+
+  String _userName='fireNote';
+  get userName=>_userName;
+  setUserName(String name){
+    _userName=name;
+    notifyListeners();
+  }
 }
