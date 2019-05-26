@@ -5,19 +5,23 @@ final String columnId = 'id';
 final String columnTitle = 'title';
 final String columnText = 'text';
 final String columnColor = 'color';
+final String columnTimeCreate='timecreate';
+final String columnTimeSet='timeset';
 
 class FireNote {
   int id;
   String title;
   String text;
   int color;
-
+  int timeNow;
+  int timeSet;
   //
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       columnTitle: title,
       columnText: text,
       columnColor: color,
+      columnTimeCreate:timeNow,
     };
     if (id != null) map[columnId] = id;
     return map;
@@ -30,6 +34,8 @@ class FireNote {
     title = map[columnTitle];
     text = map[columnText];
     color = map[columnColor];
+    timeNow=map[columnTimeCreate];
+    timeSet=map[columnTimeSet];
   }
 }
 
@@ -44,7 +50,9 @@ class NoteProvider {
       $columnId integer primary key autoincrement,
       $columnTitle text not null,
       $columnText text,
-      $columnColor integer not null
+      $columnColor integer not null,
+      $columnTimeCreate datetime,
+      $columnTimeSet datetime
       )
       ''');
     });
@@ -59,7 +67,7 @@ class NoteProvider {
 
   Future<FireNote> getFireNote(int id) async {
     List<Map> maps = await db.query(tableNote,
-        columns: [columnId, columnTitle, columnText, columnColor],
+        columns: [columnId, columnTitle, columnText, columnColor,columnTimeCreate,columnTimeSet],
         where: '$columnId=?',
         whereArgs: [id]);
     if (maps.length > 0) {
@@ -84,7 +92,7 @@ class NoteProvider {
   Future<List<FireNote>> getAllNote() async {
     List<Map> maps = await db.query(
       tableNote,
-      columns: [columnId,columnTitle,columnText,columnColor],
+      columns: [columnId,columnTitle,columnText,columnColor,columnTimeCreate,columnTimeSet],
     );
 
     if(maps.length==0||maps.isEmpty||maps==null)return null;

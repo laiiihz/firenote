@@ -88,7 +88,7 @@ class _SettingsState extends State<SettingsPage> {
                   },
                 ),
               ),
-              
+
             ],
           ),
         );

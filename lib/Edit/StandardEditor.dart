@@ -42,6 +42,10 @@ class _StandardEditorState extends State<StandardEditorPage> {
         title: Text('新建备忘'),
         actions: <Widget>[
           Padding(
+            padding: EdgeInsets.all(5),
+            child: IconButton(icon: Icon(Icons.date_range), onPressed:(){}),
+          ),
+          Padding(
             padding: EdgeInsets.all(10),
             child: FloatingActionButton(
               onPressed: () {
@@ -108,13 +112,18 @@ class _StandardEditorState extends State<StandardEditorPage> {
             onPressed: () async {
               print(_titleController.text);
               var databasePath = await getDatabasesPath();
-              var me = _noteProvider.open(Path.join(databasePath, 'app.db'));
+              var me = _noteProvider.open(Path.join(databasePath, 'app-0-1.db'));
               List<FireNote> notes = [];
               FireNote fireNote = FireNote();
               insertOp() async {
                 fireNote.text = _textController.text;
                 fireNote.title = _titleController.text;
                 fireNote.color = _myColor.value;
+                fireNote.timeNow=DateTime.now().millisecondsSinceEpoch;
+                print(fireNote.timeNow);
+                print('dateTime now');
+                print(DateTime.now());
+                print(DateTime.now().millisecondsSinceEpoch);
                 await _noteProvider.insert(fireNote);
               }
 

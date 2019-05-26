@@ -107,13 +107,14 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
               onPressed: () async{
                 print(_titleController.text);
                 var databasePath=await getDatabasesPath();
-                var me=_noteProvider.open(Path.join(databasePath,'app.db'));
+                var me=_noteProvider.open(Path.join(databasePath,'app-0-1.db'));
                 FireNote fireNote=FireNote();
                 insertOp()async{
                   fireNote.text=_textController.text;
                   fireNote.title=_titleController.text;
                   fireNote.color=_myColor.value;
                   fireNote.id=model.tempNote.id;
+                  fireNote.timeNow=DateTime.now().millisecondsSinceEpoch;
                   print('note id:'+fireNote.id.toString());
                   await _noteProvider.update(fireNote);
                 }
