@@ -343,21 +343,33 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
-//              SizedBox(
-//                height: 10,
-//              ),
-//              Transform(
-//                transform:
-//                    Matrix4.translationValues(_translateButton.value, 0, 0),
-//                child: Container(
-//                  child: FloatingActionButton(
-//                    heroTag: 'btn2',
-//                    onPressed: null,
-//                    tooltip: 'Inbox',
-//                    child: Icon(Icons.inbox),
-//                  ),
-//                ),
-//              ),
+              SizedBox(
+                height: 10,
+              ),
+              Transform(
+                transform:
+                    Matrix4.translationValues(_translateButton.value, 0, 0),
+                child: Container(
+                  child: FloatingActionButton(
+                    heroTag: 'btn2',
+                    onPressed: (){
+                      showDialog(context: context,builder: (context){
+                        return AlertDialog(
+                          title: Text('清除所有备忘？'),
+                          content: Text('将清除所有备忘。'),
+                          actions: <Widget>[
+                            FlatButton(onPressed: () {},child: Text('取消'),),
+                            RaisedButton(onPressed: () {},child: Text('清除'),color: Colors.red,textColor: Colors.white,),
+                          ],
+
+                        );
+                      });
+                    },
+                    tooltip: 'Inbox',
+                    child: Icon(Icons.clear_all),
+                  ),
+                ),
+              ),
               SizedBox(
                 height: 10,
               ),
