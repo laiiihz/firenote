@@ -9,6 +9,7 @@ import 'Database/MainDatabase.dart';
 import 'Edit/StandardEditor.dart';
 import 'dart:math';
 import 'Edit/EditorWithKey.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,17 +20,19 @@ enum _menuValue { about, settings }
 
 class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   ///*** DATABASE***/
-
   NoteProvider _noteProvider = NoteProvider();
 
   /// *DATABASE***/
 
+  final _userNameController = TextEditingController();
   bool _floatingIsOpened = false;
   AnimationController _animationController;
   Animation<double> _animateIcon;
   Animation<Color> _animateColor;
   Animation<double> _translateButton;
   Curve _curve = Curves.easeOut;
+  
+  final _pageController=PageController(initialPage: 0);
 
   List<Widget> widgetNotes = [];
 
@@ -116,20 +119,174 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
       builder: (context, child, model) {
         return Scaffold(
           drawer: Drawer(
-            child: ListView(
-              children: <Widget>[
-                DrawerHeader(
-                  child: Container(
-                    padding: EdgeInsets.all(30),
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: CircleAvatar(
-                        child: Icon(Icons.person),
+            child: ListView.builder(
+              itemCount: 20,
+              itemBuilder: (BuildContext context, int index) {
+                if (index == 0) {
+                  return DrawerHeader(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.all(30),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: CircleAvatar(
+                              radius: 30,
+                              child: Icon(Icons.person),
+                              backgroundColor: model.primaryColor,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: FlatButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (value) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30)),
+                                        child: Container(
+                                          padding: EdgeInsets.all(10),
+                                          color: Colors.transparent,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              ListTile(
+                                                title: Text(
+                                                  '修改用户名',
+                                                  style:
+                                                      TextStyle(fontSize: 25),
+                                                ),
+                                              ),
+                                              TextField(
+                                                controller: _userNameController,
+                                                decoration: InputDecoration(
+                                                  labelText: '用户名',
+                                                  filled: true,
+                                                  border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                ),
+                                                maxLength: 10,
+                                              ),
+                                              ButtonBar(
+                                                children: <Widget>[
+                                                  FlatButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text('取消'),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                      )),
+                                                  RaisedButton(
+                                                    onPressed: () {
+                                                      model.setUserName(
+                                                          _userNameController
+                                                              .text);
+
+                                                      setUserShared() async {
+                                                        SharedPreferences sh =
+                                                            await SharedPreferences
+                                                                .getInstance();
+                                                        sh.setString(
+                                                            'userName',
+                                                            _userNameController
+                                                                    .text ??
+                                                                'fireNote');
+                                                      }
+
+                                                      setUserShared();
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text('修改'),
+                                                    color: model.primaryColor,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    });
+                              },
+                              child: Container(
+                                width: 120,
+                                child: Wrap(
+                                  children: <Widget>[
+                                    Text(
+                                      model.userName,
+                                      style: TextStyle(fontSize: 25),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                if (index == 1) {
+                  return Container(
+                    padding: EdgeInsets.all(10),
+                    child: MaterialButton(
+                      onPressed: () {
+                        model.setPage(0);
+                        Navigator.pop(context);
+                        _pageController.animateToPage(0, duration: Duration(seconds: 2), curve:Curves.ease);
+                      },
+                      height: model.page == 0 ? 70 : 30,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(70)),
+                      color: model.page == 0 ? model.primaryColor : null,
+                      child: ListTile(
+                        leading: Icon(Icons.home),
+                        title: Text(
+                          '所有',
+                          style: TextStyle(fontSize: 15),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ],
+                  );
+                } else {
+                  int tempIndex = index - 1;
+                  return Container(
+                    padding: EdgeInsets.all(10),
+                    child: MaterialButton(
+                      onPressed: () {
+                        model.setPage(tempIndex);
+                        Navigator.pop(context);
+                        _pageController.animateToPage(tempIndex, duration: Duration(seconds: 2), curve:Curves.ease);
+                      },
+                      height: model.page == tempIndex ? 70 : 30,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(70)),
+                      color:
+                          model.page == tempIndex ? model.primaryColor : null,
+                      child: ListTile(
+                        leading: Text('test'),
+                      ),
+                    ),
+                  );
+                }
+              },
             ),
           ),
           appBar: AppBar(
@@ -215,70 +372,90 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
               ),
             ],
           ),
-          body: ListView.builder(
+          body: PageView.builder(
             itemBuilder: (BuildContext context, int index) {
-              String temp = model.notes[index].text;
-              String tempDate = DateTime.fromMillisecondsSinceEpoch(
-                      model.notes[index].timeNow)
-                  .toString();
-              String tempDatePartA = tempDate.substring(0, 10);
-              String tempDatePartB = tempDate.substring(11, 19);
+              if(index==0){
+                return ListView.builder(
+                  itemBuilder: (BuildContext context, int index) {
+                    String temp = model.notes[index].text;
+                    String tempDate = DateTime.fromMillisecondsSinceEpoch(
+                        model.notes[index].timeNow)
+                        .toString();
+                    String tempDatePartA = tempDate.substring(0, 10);
+                    String tempDatePartB = tempDate.substring(11, 19);
 
-              String tempDateSet=DateTime.fromMillisecondsSinceEpoch(model.notes[index].timeSet??0).toString();
-              String tempDateSetPartA = tempDateSet.substring(0, 10);
-              String tempDateSetPartB = tempDateSet.substring(11, 16);
-              if (temp != null) if (temp.length > 15)
-                temp = temp.substring(0, 15);
-              return Dismissible(
-                key: new Key(model.notes[index].id.toString() +
-                    Random().nextInt(1000).toString()),
-                child: Card(
-                  child: RaisedButton(
-                    color: Color(model.notes[index].color ?? Colors.blue),
-                    onPressed: () {
-                      model.setNoteTemp(model.notes[index]);
-                      model.setId(index);
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new EditorWithKeyPage()));
-                    },
-                    child: ListTile(
-                      title: Text(model.notes[index].title),
-                      subtitle: Text(temp),
-                      trailing: Text(tempDateSetPartA+'\n'+tempDateSetPartB),
-                    ),
-                  ),
-                ),
-                background: Container(
-                  color: Colors.red,
-                  child: ListTile(
-                    leading: Icon(Icons.delete),
-                  ),
-                ),
-                secondaryBackground: Container(
-                  color: Colors.cyan,
-                  child: ListTile(
-                    trailing: Text(
-                      tempDatePartA + '\n' + tempDatePartB,
-                    ),
-                  ),
-                ),
-                onDismissed: (direction) {
-                  if(direction==DismissDirection.startToEnd){
-                    _noteProvider.delete(model.notes[index].id);
-                    model.deleteNote(index);
-                    final snackBar = SnackBar(content: Icon(Icons.delete_forever));
-                    Scaffold.of(context).showSnackBar(snackBar);
-                  }
-                  if(direction==DismissDirection.endToStart){
-                    final snackBar = SnackBar(content: Icon(Icons.tag_faces));
-                    Scaffold.of(context).showSnackBar(snackBar);
-                  }
-                },
-              );
+                    String tempDateSet = DateTime.fromMillisecondsSinceEpoch(
+                        model.notes[index].timeSet ?? 0)
+                        .toString();
+                    String tempDateSetPartA = tempDateSet.substring(0, 10);
+                    String tempDateSetPartB = tempDateSet.substring(11, 16);
+                    if (temp != null) if (temp.length > 15)
+                      temp = temp.substring(0, 15);
+                    return Dismissible(
+                      key: new Key(model.notes[index].id.toString() +
+                          Random().nextInt(1000).toString()),
+                      child: Card(
+                        child: RaisedButton(
+                          color:
+                          Color(model.notes[index].color ?? Colors.blue),
+                          onPressed: () {
+                            model.setNoteTemp(model.notes[index]);
+                            model.setId(index);
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) =>
+                                    new EditorWithKeyPage()));
+                          },
+                          child: ListTile(
+                            title: Text(model.notes[index].title),
+                            subtitle: Text(temp),
+                            trailing: Text(
+                                tempDateSetPartA + '\n' + tempDateSetPartB),
+                          ),
+                        ),
+                      ),
+                      background: Container(
+                        color: Colors.red,
+                        child: ListTile(
+                          leading: Icon(Icons.delete),
+                        ),
+                      ),
+                      secondaryBackground: Container(
+                        color: Colors.cyan,
+                        child: ListTile(
+                          trailing: Text(
+                            tempDatePartA + '\n' + tempDatePartB,
+                          ),
+                        ),
+                      ),
+                      onDismissed: (direction) {
+                        if (direction == DismissDirection.startToEnd) {
+                          _noteProvider.delete(model.notes[index].id);
+                          model.deleteNote(index);
+                          final snackBar =
+                          SnackBar(content: Icon(Icons.delete_forever));
+                          Scaffold.of(context).showSnackBar(snackBar);
+                        }
+                        if (direction == DismissDirection.endToStart) {
+                          final snackBar =
+                          SnackBar(content: Icon(Icons.tag_faces));
+                          Scaffold.of(context).showSnackBar(snackBar);
+                        }
+                      },
+                    );
+                  },
+                  itemCount: model.notes == null ? 0 : model.notes.length,
+                );
+              }else{
+                return Center(
+                  child: Text('page '+index.toString(),style: TextStyle(fontSize: 40),),
+                );
+              }
             },
-            itemCount: model.notes == null ? 0 : model.notes.length,
+            itemCount: 20,
+            scrollDirection: Axis.horizontal,
+            controller: _pageController,
           ),
         );
       },

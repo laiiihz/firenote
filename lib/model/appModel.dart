@@ -95,4 +95,18 @@ class AppModel extends Model {
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     notifyListeners();
   }
+
+  int _page=0;
+  get page=>_page;
+  setPage(int pageMe){
+    _page=pageMe;
+    notifyListeners();
+  }
+
+  String _userName='fireNote';
+  get userName=>_userName;
+  setUserName(String name){
+    _userName=name;
+    notifyListeners();
+  }
 }
