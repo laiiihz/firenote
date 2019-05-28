@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firenote/model/appModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'JPushTest.dart';
 class DeveloperModePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _DeveloperModeState();
@@ -32,35 +32,46 @@ class _DeveloperModeState extends State<DeveloperModePage> {
                 ),
               ),
               SliverList(
-                  delegate: SliverChildListDelegate(<Widget>[
-                Card(
-                  child: ListTile(
-                    leading: Icon(
-                      model.iphoneStyleOn
-                          ? Icons.phone_iphone
-                          : Icons.phone_android,
-                      size: 30,
-                    ),
-                    title: Text('应用风格'),
-                    subtitle: model.iphoneStyleOn
-                        ? Text('IOS style')
-                        : Text('Android style'),
-                    trailing: Switch(
-                      value: model.iphoneStyleOn,
-                      onChanged: (value) {
-                        model.setIPhoneStyleOn(value);
-                        openIPhoneMode() async {
-                          SharedPreferences sh =
-                              await SharedPreferences.getInstance();
-                          sh.setBool('iphoneMode', value);
-                        }
+                delegate: SliverChildListDelegate(
+                  <Widget>[
+                    Card(
+                      child: ListTile(
+                        leading: Icon(
+                          model.iphoneStyleOn
+                              ? Icons.phone_iphone
+                              : Icons.phone_android,
+                          size: 30,
+                        ),
+                        title: Text('应用风格'),
+                        subtitle: model.iphoneStyleOn
+                            ? Text('IOS style')
+                            : Text('Android style'),
+                        trailing: Switch(
+                          value: model.iphoneStyleOn,
+                          onChanged: (value) {
+                            model.setIPhoneStyleOn(value);
+                            openIPhoneMode() async {
+                              SharedPreferences sh =
+                                  await SharedPreferences.getInstance();
+                              sh.setBool('iphoneMode', value);
+                            }
 
-                        openIPhoneMode();
-                      },
+                            openIPhoneMode();
+                          },
+                        ),
+                      ),
                     ),
-                  ),
+                    Card(
+                      child: MaterialButton(
+                        onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>JPushTestPage())),
+                        child: ListTile(
+                          title: Text('localPush Test'),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ])),
+              ),
             ],
           ),
         );

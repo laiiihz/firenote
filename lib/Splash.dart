@@ -19,20 +19,24 @@ class _SplashState extends State<SplashPage> {
     super.initState();
     AppModel model = ScopedModel.of(context);
 
-    Future<bool> transparentShared()async{
-      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-      return sharedPreferences.getBool('transparentMode'??false);
+    Future<bool> transparentShared() async {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      return sharedPreferences.getBool('transparentMode' ?? false);
     }
-    transparentShared().then((onValue){
-      model.setStatusBarTransparent(onValue??false);
+
+    transparentShared().then((onValue) {
+      model.setStatusBarTransparent(onValue ?? false);
     });
 
-    Future<String> userNameShared()async {
-      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-      return sharedPreferences.getString('userName'??'fireNote');
+    Future<String> userNameShared() async {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      return sharedPreferences.getString('userName' ?? 'fireNote');
     }
-    userNameShared().then((onValue){
-      model.setUserName(onValue??'fireNote');
+
+    userNameShared().then((onValue) {
+      model.setUserName(onValue ?? 'fireNote');
     });
 
     Future<bool> darkModeShared() async {
@@ -43,7 +47,7 @@ class _SplashState extends State<SplashPage> {
 
     darkModeShared().then((onValue) {
       model.setDarkMode(onValue ?? false);
-      if (!(onValue??false)) {
+      if (!(onValue ?? false)) {
         Future<int> themeColorShared() async {
           SharedPreferences sharedPreferences =
               await SharedPreferences.getInstance();
@@ -77,7 +81,13 @@ class _SplashState extends State<SplashPage> {
     return ScopedModelDescendant<AppModel>(
       builder: (context, child, model) {
         return Container(
-          child: Image.asset('assets/1.png'),
+          color: Color(0x77ffffff),
+          child: Center(
+            child: Image.asset(
+              'assets/firenote.png',
+              width: 128,
+            ),
+          ),
         );
       },
     );
