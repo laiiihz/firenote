@@ -109,4 +109,11 @@ class AppModel extends Model {
     _userName=name;
     notifyListeners();
   }
+
+  int _tagCount=0;
+  get tagCount=>_tagCount;
+  setTagCount(int num){
+    _tagCount=num;
+    notifyListeners();
+  }
 }

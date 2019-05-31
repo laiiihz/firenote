@@ -120,7 +120,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
         return Scaffold(
           drawer: Drawer(
             child: ListView.builder(
-              itemCount: 20,
+              itemCount: model.tagCount+2,
               itemBuilder: (BuildContext context, int index) {
                 if (index == 0) {
                   return DrawerHeader(
