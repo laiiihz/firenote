@@ -54,6 +54,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
         tempNote.text = '右下角点击开始新建';
         tempNote.id = 9999999;
         tempNote.title = '欢迎使用';
+        tempNote.tag = 0;
         tempNote.timeNow = DateTime.now().millisecondsSinceEpoch;
         if (tempNotes == null) {
           tempNotes = [tempNote];
@@ -118,10 +119,11 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<AppModel>(
       builder: (context, child, model) {
+        print(model.tags);
         return Scaffold(
           drawer: Drawer(
             child: ListView.builder(
-              itemCount: model.tagCount + 2,
+              itemCount: model.tagCount +1,
               itemBuilder: (BuildContext context, int index) {
                 if (index == 0) {
                   return DrawerHeader(
@@ -148,9 +150,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                     context: context,
                                     builder: (value) {
                                       return Dialog(
-                                        shape: false?RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(30)):null,
+                                        shape:null,
                                         child: Container(
                                           padding: EdgeInsets.all(10),
                                           color: Colors.transparent,
@@ -175,11 +175,11 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                               ButtonBar(
                                                 children: <Widget>[
                                                   FlatButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text('取消'),
-                                                      ),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text('取消'),
+                                                  ),
                                                   RaisedButton(
                                                     onPressed: () {
                                                       model.setUserName(
@@ -239,8 +239,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                             duration: Duration(seconds: 2), curve: Curves.ease);
                       },
                       height: model.page == 0 ? 70 : 30,
-                      shape: false?RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(70)):null,
+                      shape:null,
                       color: model.page == 0 ? model.primaryColor : null,
                       child: ListTile(
                         leading: Icon(Icons.home),
@@ -262,13 +261,11 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                             duration: Duration(seconds: 2), curve: Curves.ease);
                       },
                       height: model.page == tempIndex ? 70 : 30,
-                      shape: false?RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(70)):null,
                       color:
                           model.page == tempIndex ? model.primaryColor : null,
                       child: ListTile(
                         leading: Icon(Icons.bookmark_border),
-                        title: Text(model.tags[tempIndex - 1]),
+                        title: Text(model.tags[tempIndex]),
                       ),
                     ),
                   );
@@ -344,8 +341,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              shape: false?RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)):null,
+                              shape:null,
                               title: Text('add group'),
                               content: Container(
                                 padding: EdgeInsets.all(10),
@@ -370,7 +366,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                         ),
                                         RaisedButton(
                                           onPressed: () {
-                                            var text=_groupTagController.text;
+                                            var text = _groupTagController.text;
                                             model.addTags(text);
                                             _groupTagController.clear();
                                             Navigator.pop(context);
@@ -470,24 +466,34 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                     return Dismissible(
                       key: new Key(model.notes[index].id.toString() +
                           Random().nextInt(1000).toString()),
-                      child: Card(
-                        child: RaisedButton(
-                          color: Color(model.notes[index].color ?? Colors.blue),
-                          onPressed: () {
-                            model.setNoteTemp(model.notes[index]);
-                            model.setId(index);
-                            Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (context) =>
-                                        new EditorWithKeyPage()));
-                          },
-                          child: ListTile(
-                            title: Text(model.notes[index].title),
-                            subtitle: Text(temp),
-                            trailing: Text(
-                                tempDateSetPartA + '\n' + tempDateSetPartB),
+                      child: MaterialButton(
+                        color: Color(model.notes[index].color ?? Colors.blue),
+                        onPressed: () {
+                          model.setNoteTemp(model.notes[index]);
+                          model.setId(index);
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) =>
+                                      new EditorWithKeyPage()));
+                        },
+                        child: ListTile(
+                          title: RichText(
+                            text: TextSpan(children: <TextSpan>[
+                              TextSpan(
+                                text: model.notes[index].title,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w100, fontSize: 20),
+                              ),
+                              TextSpan(
+                                  text: model.tags[model.notes[index].tag],
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.w700)),
+                            ]),
                           ),
+                          subtitle: Text(temp),
+                          trailing:
+                              Text(tempDateSetPartA + '\n' + tempDateSetPartB),
                         ),
                       ),
                       background: Container(
@@ -508,14 +514,21 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                         if (direction == DismissDirection.startToEnd) {
                           _noteProvider.delete(model.notes[index].id);
                           model.deleteNote(index);
-                          final snackBar =
-                              SnackBar(content: Icon(Icons.delete_forever));
+                          final snackBar = SnackBar(
+                            content: Icon(Icons.delete_forever),
+                            duration: Duration(seconds: 1),
+                          );
                           Scaffold.of(context).showSnackBar(snackBar);
                         }
                         if (direction == DismissDirection.endToStart) {
-                          final snackBar =
-                              SnackBar(content: Icon(Icons.tag_faces));
+                          final snackBar = SnackBar(
+                            content: Icon(Icons.tag_faces),
+                            duration: Duration(seconds: 1),
+                          );
                           Scaffold.of(context).showSnackBar(snackBar);
+                          setState(() {
+                            widgetNotes = widgetNotes;
+                          });
                         }
                       },
                     );
@@ -523,15 +536,17 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                   itemCount: model.notes == null ? 0 : model.notes.length,
                 );
               } else {
-                return Center(
-                  child: Text(
-                    'page ' + index.toString(),
-                    style: TextStyle(fontSize: 40),
-                  ),
+                return ListView.builder(
+                  //index start with 1
+                  //ListString start with 1
+                  itemBuilder: (BuildContext context, int indexList) {
+
+                  },
+
                 );
               }
             },
-            itemCount: model.tagCount + 1,
+            itemCount: model.tagCount,
             scrollDirection: Axis.horizontal,
             controller: _pageController,
           ),

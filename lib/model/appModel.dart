@@ -122,9 +122,9 @@ class AppModel extends Model {
   List<String> _tags=[];
   get tags=>_tags;
   setTags(List<String> tagsMe){
-    _tags=tagsMe;
+    _tags.addAll(tagsMe);
     if(tagsMe!=null){
-      _tagCount=tagsMe.length??0;
+      _tagCount=tagsMe.length;
     }
     notifyListeners();
   }
@@ -141,8 +141,8 @@ class AppModel extends Model {
   }
 
   clearTags(){
-    _tags=[];
-    _tagCount=0;
+    _tags=['all'];
+    _tagCount=1;
     clearTagShared()async{
       SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
       sharedPreferences.setStringList('tags',_tags);
