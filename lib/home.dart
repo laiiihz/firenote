@@ -25,6 +25,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   /// *DATABASE***/
 
   final _userNameController = TextEditingController();
+  final _groupTagController = TextEditingController();
   bool _floatingIsOpened = false;
   AnimationController _animationController;
   Animation<double> _animateIcon;
@@ -147,9 +148,9 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                     context: context,
                                     builder: (value) {
                                       return Dialog(
-                                        shape: RoundedRectangleBorder(
+                                        shape: false?RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(30)),
+                                                BorderRadius.circular(30)):null,
                                         child: Container(
                                           padding: EdgeInsets.all(10),
                                           color: Colors.transparent,
@@ -168,10 +169,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                                 decoration: InputDecoration(
                                                   labelText: '用户名',
                                                   filled: true,
-                                                  border: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20)),
                                                 ),
                                                 maxLength: 10,
                                               ),
@@ -182,12 +179,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                                         Navigator.pop(context);
                                                       },
                                                       child: Text('取消'),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                      )),
+                                                      ),
                                                   RaisedButton(
                                                     onPressed: () {
                                                       model.setUserName(
@@ -210,12 +202,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                                     },
                                                     child: Text('修改'),
                                                     color: model.primaryColor,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20),
-                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -254,8 +240,8 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                             duration: Duration(seconds: 2), curve: Curves.ease);
                       },
                       height: model.page == 0 ? 70 : 30,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(70)),
+                      shape: false?RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(70)):null,
                       color: model.page == 0 ? model.primaryColor : null,
                       child: ListTile(
                         leading: Icon(Icons.home),
@@ -278,8 +264,8 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                             duration: Duration(seconds: 2), curve: Curves.ease);
                       },
                       height: model.page == tempIndex ? 70 : 30,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(70)),
+                      shape: false?RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(70)):null,
                       color:
                           model.page == tempIndex ? model.primaryColor : null,
                       child: ListTile(
@@ -359,8 +345,8 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)),
+                              shape: false?RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)):null,
                               title: Text('add group'),
                               content: Container(
                                 padding: EdgeInsets.all(10),
@@ -372,10 +358,8 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                         labelText: 'group name',
                                         prefixIcon: Icon(Icons.group_add),
                                         filled: true,
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(20),
-                                        ),
                                       ),
+                                      controller: _groupTagController,
                                     ),
                                     ButtonBar(
                                       children: <Widget>[
@@ -384,19 +368,14 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                             Navigator.pop(context);
                                           },
                                           child: Text('cancel'),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
                                         ),
                                         RaisedButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            var text=_groupTagController.text;
+                                            model.addTags(text);
+                                          },
                                           child: Text('add'),
                                           color: model.primaryColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
                                         ),
                                       ],
                                     ),

@@ -136,8 +136,18 @@ class AppModel extends Model {
       SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
       sharedPreferences.setStringList('tags',_tags);
     }
-
     addTagShared();
+    notifyListeners();
+  }
+
+  clearTags(){
+    _tags=[];
+    _tagCount=0;
+    clearTagShared()async{
+      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+      sharedPreferences.setStringList('tags',_tags);
+    }
+    clearTagShared();
     notifyListeners();
   }
 }
