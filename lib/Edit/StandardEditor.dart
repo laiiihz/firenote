@@ -18,9 +18,12 @@ class _StandardEditorState extends State<StandardEditorPage> {
   var _textController = TextEditingController();
   DateTime _dateTime;
   TimeOfDay _dateOfDay;
-  int _timeMillsec=DateTime.now().millisecondsSinceEpoch;
-  DateTime _nowTime=DateTime.now();
+  int _timeMillsec = DateTime.now().millisecondsSinceEpoch;
+  DateTime _nowTime = DateTime.now();
   Timer countdownTimer;
+  var _value = 0;
+  List<DropdownMenuItem<int>> genWidget=[];
+
   ///***DATABASE***/
   NoteProvider _noteProvider = NoteProvider();
 
@@ -56,23 +59,36 @@ class _StandardEditorState extends State<StandardEditorPage> {
       print(_dateOfDay);
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    countdownTimer =  new Timer.periodic(new Duration(seconds: 1), (timer) {
+    countdownTimer = new Timer.periodic(new Duration(seconds: 1), (timer) {
       setState(() {
-        _nowTime=DateTime.now();
+        _nowTime = DateTime.now();
       });
     });
+    AppModel model=ScopedModel.of(context);
+    List<String> tag=model.tags;
+    for (var i = 0; i < tag.length; ++i) {
+      genWidget.add(
+        DropdownMenuItem(
+          child: Text(tag[i]),
+          value: i,
+        ),
+      );
+    }
     countdownTimer.tick;
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     countdownTimer.cancel();
   }
+
   @override
   Widget build(BuildContext context) {
     Widget _buildButton(Color color) {
@@ -147,7 +163,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  _buildButton(Colors.indigo),
+                                  _buildButton(Colors.indigoAccent),
                                   SizedBox(
                                     width: 10,
                                   ),
@@ -180,6 +196,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
                 fireNote.color = _myColor.value;
                 fireNote.timeNow = DateTime.now().millisecondsSinceEpoch;
                 fireNote.timeSet = _timeMillsec;
+                fireNote.tag=_value;
                 print('dateTime set');
                 print(fireNote.timeSet);
                 await _noteProvider.insert(fireNote);
@@ -211,6 +228,15 @@ class _StandardEditorState extends State<StandardEditorPage> {
                 labelText: '标题',
                 hintText: '输入你的标题',
                 border: OutlineInputBorder(),
+                suffixIcon: DropdownButton(
+                  items: genWidget,
+                  onChanged: (value) {
+                    setState(() {
+                      _value = value;
+                    });
+                  },
+                  value: _value,
+                ),
               ),
               cursorColor: Colors.red,
               cursorWidth: 5,
@@ -234,19 +260,20 @@ class _StandardEditorState extends State<StandardEditorPage> {
             padding: EdgeInsets.all(5),
             child: Card(
               child: ListTile(
-                leading: Text('创建时间:'+_nowTime.toString().substring(0,19)),
+                leading: Text('创建时间:' + _nowTime.toString().substring(0, 19)),
               ),
             ),
-
           ),
           Padding(
             padding: EdgeInsets.all(5),
             child: Card(
               child: ListTile(
-                leading: Text('提醒时间:'+DateTime.fromMillisecondsSinceEpoch(_timeMillsec??0).toString().substring(0,16)),
+                leading: Text('提醒时间:' +
+                    DateTime.fromMillisecondsSinceEpoch(_timeMillsec ?? 0)
+                        .toString()
+                        .substring(0, 16)),
               ),
             ),
-
           ),
         ],
       ),

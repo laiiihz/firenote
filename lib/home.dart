@@ -478,24 +478,22 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                     return Dismissible(
                       key: new Key(model.notes[index].id.toString() +
                           Random().nextInt(1000).toString()),
-                      child: Card(
-                        child: RaisedButton(
-                          color: Color(model.notes[index].color ?? Colors.blue),
-                          onPressed: () {
-                            model.setNoteTemp(model.notes[index]);
-                            model.setId(index);
-                            Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (context) =>
-                                        new EditorWithKeyPage()));
-                          },
-                          child: ListTile(
-                            title: Text(model.notes[index].title),
-                            subtitle: Text(temp),
-                            trailing: Text(
-                                tempDateSetPartA + '\n' + tempDateSetPartB),
-                          ),
+                      child: MaterialButton(
+                        color: Color(model.notes[index].color ?? Colors.blue),
+                        onPressed: () {
+                          model.setNoteTemp(model.notes[index]);
+                          model.setId(index);
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) =>
+                                      new EditorWithKeyPage()));
+                        },
+                        child: ListTile(
+                          title: Text(model.notes[index].title),
+                          subtitle: Text(temp),
+                          trailing:
+                              Text(tempDateSetPartA + '\n' + tempDateSetPartB),
                         ),
                       ),
                       background: Container(
@@ -516,14 +514,21 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                         if (direction == DismissDirection.startToEnd) {
                           _noteProvider.delete(model.notes[index].id);
                           model.deleteNote(index);
-                          final snackBar =
-                              SnackBar(content: Icon(Icons.delete_forever));
+                          final snackBar = SnackBar(
+                            content: Icon(Icons.delete_forever),
+                            duration: Duration(seconds: 1),
+                          );
                           Scaffold.of(context).showSnackBar(snackBar);
                         }
                         if (direction == DismissDirection.endToStart) {
-                          final snackBar =
-                              SnackBar(content: Icon(Icons.tag_faces));
+                          final snackBar = SnackBar(
+                            content: Icon(Icons.tag_faces),
+                            duration: Duration(seconds: 1),
+                          );
                           Scaffold.of(context).showSnackBar(snackBar);
+                          setState(() {
+                            widgetNotes=widgetNotes;
+                          });
                         }
                       },
                     );
