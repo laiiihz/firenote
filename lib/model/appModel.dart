@@ -2,6 +2,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/material.dart';
 import 'package:firenote/Database/MainDatabase.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class AppModel extends Model {
   ThemeData _appTheme = ThemeData.light();
   get appTheme => _appTheme;
@@ -131,6 +132,22 @@ class AppModel extends Model {
   addTags(String singleTag){
     _tags.add(singleTag);
     _tagCount++;
+    addTagShared()async{
+      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+      sharedPreferences.setStringList('tags',_tags);
+    }
+    addTagShared();
+    notifyListeners();
+  }
+
+  clearTags(){
+    _tags=[];
+    _tagCount=0;
+    clearTagShared()async{
+      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+      sharedPreferences.setStringList('tags',_tags);
+    }
+    clearTagShared();
     notifyListeners();
   }
 }

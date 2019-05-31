@@ -110,6 +110,10 @@ class NoteProvider {
     return notes.reversed.toList();
   }
 
+  Future deleteAllData()async{
+    return await db.delete(tableNote,where: null,whereArgs: null);
+  }
+
   Future close() async => db.close();
 
   @override
