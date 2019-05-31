@@ -281,7 +281,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                       color:
                           model.page == tempIndex ? model.primaryColor : null,
                       child: ListTile(
-                        leading: Text('test'),
+                        leading: Text(model.tags[tempIndex-1]),
                       ),
                     ),
                   );
@@ -338,7 +338,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                           new MaterialPageRoute(
                               builder: (context) => new StandardEditorPage()));
                     },
-                    tooltip: 'Inbox',
+                    tooltip: 'add',
                     child: Icon(Icons.add),
                   ),
                 ),
@@ -365,7 +365,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                         );
                       });
                     },
-                    tooltip: 'Inbox',
+                    tooltip: '清除所有备忘',
                     child: Icon(Icons.clear_all),
                   ),
                 ),
