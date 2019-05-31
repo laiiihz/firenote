@@ -372,6 +372,8 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                           onPressed: () {
                                             var text=_groupTagController.text;
                                             model.addTags(text);
+                                            _groupTagController.clear();
+                                            Navigator.pop(context);
                                           },
                                           child: Text('add'),
                                           color: model.primaryColor,
@@ -407,11 +409,18 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                               content: Text('将清除所有备忘。'),
                               actions: <Widget>[
                                 FlatButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
                                   child: Text('取消'),
                                 ),
                                 RaisedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _noteProvider.deleteAllData();
+                                    model.setNotes([]);
+                                    model.clearTags();
+                                    Navigator.pop(context);
+                                  },
                                   child: Text('清除'),
                                   color: Colors.red,
                                   textColor: Colors.white,
