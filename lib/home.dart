@@ -54,6 +54,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
         tempNote.text = '右下角点击开始新建';
         tempNote.id = 9999999;
         tempNote.title = '欢迎使用';
+        tempNote.tag=0;
         tempNote.timeNow = DateTime.now().millisecondsSinceEpoch;
         if (tempNotes == null) {
           tempNotes = [tempNote];
@@ -274,7 +275,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                           model.page == tempIndex ? model.primaryColor : null,
                       child: ListTile(
                         leading: Icon(Icons.bookmark_border),
-                        title: Text(model.tags[tempIndex - 1]),
+                        title: Text(model.tags[tempIndex]),
                       ),
                     ),
                   );
@@ -490,7 +491,12 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                       new EditorWithKeyPage()));
                         },
                         child: ListTile(
-                          title: Text(model.notes[index].title),
+                          title: RichText(
+                            text: TextSpan(children: <TextSpan>[
+                              TextSpan(text: model.notes[index].title,style: TextStyle(fontWeight: FontWeight.w100,fontSize: 20),),
+                              TextSpan(text: model.tags[model.notes[index].tag],style: TextStyle(fontWeight: FontWeight.w700)),
+                            ]),
+                          ),
                           subtitle: Text(temp),
                           trailing:
                               Text(tempDateSetPartA + '\n' + tempDateSetPartB),
@@ -527,7 +533,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                           );
                           Scaffold.of(context).showSnackBar(snackBar);
                           setState(() {
-                            widgetNotes=widgetNotes;
+                            widgetNotes = widgetNotes;
                           });
                         }
                       },
