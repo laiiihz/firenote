@@ -72,6 +72,15 @@ class _SplashState extends State<SplashPage> {
       model.setIPhoneStyleOn(onValue ?? false);
     });
 
+    Future<List<String>> tagsShared() async{
+      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+      return sharedPreferences.getStringList('tags')??['a','b','c'];
+    }
+
+    tagsShared().then((onValue){
+      model.setTags(onValue);
+    });
+
     new Future.delayed(Duration(milliseconds: 500), go2Home);
   }
 

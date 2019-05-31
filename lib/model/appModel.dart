@@ -114,6 +114,23 @@ class AppModel extends Model {
   get tagCount=>_tagCount;
   setTagCount(int num){
     _tagCount=num;
+    print('tag number'+_tagCount.toString());
+    notifyListeners();
+  }
+
+  List<String> _tags=[];
+  get tags=>_tags;
+  setTags(List<String> tagsMe){
+    _tags=tagsMe;
+    if(tagsMe!=null){
+      _tagCount=tagsMe.length??0;
+    }
+    notifyListeners();
+  }
+
+  addTags(String singleTag){
+    _tags.add(singleTag);
+    _tagCount++;
     notifyListeners();
   }
 }

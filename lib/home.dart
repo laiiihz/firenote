@@ -465,7 +465,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                 );
               }
             },
-            itemCount: 20,
+            itemCount: model.tagCount+1,
             scrollDirection: Axis.horizontal,
             controller: _pageController,
           ),
