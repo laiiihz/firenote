@@ -231,7 +231,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                 }
                 if (index == 1) {
                   return Container(
-                    padding: EdgeInsets.all(10),
                     child: MaterialButton(
                       onPressed: () {
                         model.setPage(0);
@@ -255,7 +254,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                 } else {
                   int tempIndex = index - 1;
                   return Container(
-                    padding: EdgeInsets.all(10),
                     child: MaterialButton(
                       onPressed: () {
                         model.setPage(tempIndex);
@@ -269,7 +267,8 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                       color:
                           model.page == tempIndex ? model.primaryColor : null,
                       child: ListTile(
-                        leading: Text(model.tags[tempIndex - 1]),
+                        leading: Icon(Icons.bookmark_border),
+                        title: Text(model.tags[tempIndex - 1]),
                       ),
                     ),
                   );
