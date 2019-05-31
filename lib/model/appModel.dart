@@ -119,12 +119,12 @@ class AppModel extends Model {
     notifyListeners();
   }
 
-  List<String> _tags=['all'];
+  List<String> _tags=[];
   get tags=>_tags;
   setTags(List<String> tagsMe){
     _tags.addAll(tagsMe);
     if(tagsMe!=null){
-      _tagCount=tagsMe.length??0;
+      _tagCount=tagsMe.length;
     }
     notifyListeners();
   }

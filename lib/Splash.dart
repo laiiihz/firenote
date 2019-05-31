@@ -74,14 +74,14 @@ class _SplashState extends State<SplashPage> {
 
     Future<List<String>> tagsShared() async{
       SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-      return sharedPreferences.getStringList('tags')??['a','b','c'];
+      return sharedPreferences.getStringList('tags')??['all'];
     }
 
     tagsShared().then((onValue){
       model.setTags(onValue);
     });
 
-    new Future.delayed(Duration(milliseconds: 500), go2Home);
+    new Future.delayed(Duration(milliseconds: 700), go2Home);
   }
 
   @override
@@ -92,9 +92,15 @@ class _SplashState extends State<SplashPage> {
         return Container(
           color: Color(0x77ffffff),
           child: Center(
-            child: Image.asset(
-              'assets/firenote.png',
-              width: 128,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Image.asset(
+                  'assets/firenote.png',
+                  width: 128,
+                ),
+                CircularProgressIndicator(),
+              ],
             ),
           ),
         );
