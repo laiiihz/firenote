@@ -148,9 +148,11 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                     context: context,
                                     builder: (value) {
                                       return Dialog(
-                                        shape: false?RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(30)):null,
+                                        shape: false
+                                            ? RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(30))
+                                            : null,
                                         child: Container(
                                           padding: EdgeInsets.all(10),
                                           color: Colors.transparent,
@@ -175,11 +177,11 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                               ButtonBar(
                                                 children: <Widget>[
                                                   FlatButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text('取消'),
-                                                      ),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text('取消'),
+                                                  ),
                                                   RaisedButton(
                                                     onPressed: () {
                                                       model.setUserName(
@@ -239,8 +241,10 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                             duration: Duration(seconds: 2), curve: Curves.ease);
                       },
                       height: model.page == 0 ? 70 : 30,
-                      shape: false?RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(70)):null,
+                      shape: false
+                          ? RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(70))
+                          : null,
                       color: model.page == 0 ? model.primaryColor : null,
                       child: ListTile(
                         leading: Icon(Icons.home),
@@ -262,8 +266,10 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                             duration: Duration(seconds: 2), curve: Curves.ease);
                       },
                       height: model.page == tempIndex ? 70 : 30,
-                      shape: false?RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(70)):null,
+                      shape: false
+                          ? RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(70))
+                          : null,
                       color:
                           model.page == tempIndex ? model.primaryColor : null,
                       child: ListTile(
@@ -344,8 +350,10 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              shape: false?RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)):null,
+                              shape: false
+                                  ? RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30))
+                                  : null,
                               title: Text('add group'),
                               content: Container(
                                 padding: EdgeInsets.all(10),
@@ -370,7 +378,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                         ),
                                         RaisedButton(
                                           onPressed: () {
-                                            var text=_groupTagController.text;
+                                            var text = _groupTagController.text;
                                             model.addTags(text);
                                             _groupTagController.clear();
                                             Navigator.pop(context);
