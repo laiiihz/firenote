@@ -150,4 +150,15 @@ class AppModel extends Model {
     clearTagShared();
     notifyListeners();
   }
+
+
+  List<FireNote> noteWithTag(int index){
+    List<FireNote > result=[];
+    for (var i = 0; i < _notes.length; ++i) {
+      if(index==_notes[i].tag){
+        result.add(_notes[i]);
+      }
+    }
+    return result;
+  }
 }

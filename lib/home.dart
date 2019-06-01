@@ -123,7 +123,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
         return Scaffold(
           drawer: Drawer(
             child: ListView.builder(
-              itemCount: model.tagCount +1,
+              itemCount: model.tagCount + 1,
               itemBuilder: (BuildContext context, int index) {
                 if (index == 0) {
                   return DrawerHeader(
@@ -150,7 +150,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                     context: context,
                                     builder: (value) {
                                       return Dialog(
-                                        shape:null,
+                                        shape: null,
                                         child: Container(
                                           padding: EdgeInsets.all(10),
                                           color: Colors.transparent,
@@ -239,7 +239,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                             duration: Duration(seconds: 2), curve: Curves.ease);
                       },
                       height: model.page == 0 ? 70 : 30,
-                      shape:null,
+                      shape: null,
                       color: model.page == 0 ? model.primaryColor : null,
                       child: ListTile(
                         leading: Icon(Icons.home),
@@ -341,7 +341,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              shape:null,
+                              shape: null,
                               title: Text('add group'),
                               content: Container(
                                 padding: EdgeInsets.all(10),
@@ -354,6 +354,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                         prefixIcon: Icon(Icons.group_add),
                                         filled: true,
                                       ),
+                                      maxLength: 3,
                                       controller: _groupTagController,
                                     ),
                                     ButtonBar(
@@ -487,8 +488,9 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                               ),
                               TextSpan(
                                   text: model.tags[model.notes[index].tag],
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.w700)),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                  )),
                             ]),
                           ),
                           subtitle: Text(temp),
@@ -536,13 +538,61 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                   itemCount: model.notes == null ? 0 : model.notes.length,
                 );
               } else {
+                List<FireNote> tempNotes=model.noteWithTag(index);
+                if(tempNotes.length==0)return Center(
+                  child: Icon(Icons.tag_faces,size: 100,color: model.primaryColor,),
+                );
                 return ListView.builder(
-                  //index start with 1
-                  //ListString start with 1
                   itemBuilder: (BuildContext context, int indexList) {
 
+                    return Dismissible(
+                      key: new Key(tempNotes[indexList].id.toString() +
+                          Random().nextInt(1000).toString()),
+                      child: MaterialButton(
+                        onPressed: () {},
+                        color: Color(tempNotes[indexList].color),
+                        child: ListTile(
+                          title: Text(tempNotes[indexList].title),
+                          subtitle: Text(tempNotes[indexList].text),
+                          trailing: Text(DateTime.fromMillisecondsSinceEpoch(tempNotes[indexList].timeSet).toString()),
+                        ),
+                      ),
+                      onDismissed: (direction){
+                        if (direction == DismissDirection.startToEnd) {
+                          _noteProvider.delete(tempNotes[indexList].id);
+                          model.deleteNote(indexList);
+                          final snackBar = SnackBar(
+                            content: Icon(Icons.delete_forever),
+                            duration: Duration(seconds: 1),
+                          );
+                          Scaffold.of(context).showSnackBar(snackBar);
+                        }
+                        if (direction == DismissDirection.endToStart) {
+                          final snackBar = SnackBar(
+                            content: Icon(Icons.tag_faces),
+                            duration: Duration(seconds: 1),
+                          );
+                          Scaffold.of(context).showSnackBar(snackBar);
+                          setState(() {
+                            tempNotes = tempNotes;
+                          });
+                        }
+                      },
+                      background: Container(
+                        child: ListTile(
+                          leading: Icon(Icons.delete_forever),
+                        ),
+                        color: Colors.red,
+                      ),
+                      secondaryBackground: Container(
+                        child: ListTile(
+                          trailing: Text(DateTime.fromMillisecondsSinceEpoch(tempNotes[indexList].timeNow).toString()),
+                        ),
+                        color: Colors.cyan,
+                      ),
+                    );
                   },
-
+                  itemCount: tempNotes.length,
                 );
               }
             },
