@@ -26,6 +26,8 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
   int _timeMillsec = DateTime.now().millisecondsSinceEpoch;
   DateTime _nowTime = DateTime.now();
   Timer countdownTimer;
+  var _value = 0;
+  List<DropdownMenuItem<int>> genWidget=[];
 
   Future<Null> _showDatePicker(BuildContext context) async {
     AppModel appModel = ScopedModel.of(context);
@@ -66,6 +68,18 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
     // TODO: implement initState
     super.initState();
     AppModel model = ScopedModel.of(context);
+    List<String> tag=model.tags;
+    for (var i = 0; i < tag.length; ++i) {
+      genWidget.add(
+        DropdownMenuItem(
+          child: Text(tag[i]),
+          value: i,
+        ),
+      );
+    }
+    setState(() {
+      _value=model.tempNote.tag;
+    });
     setState(() {
       _myColor = Color(model.tempNote.color);
     });
@@ -146,7 +160,7 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      _buildButton(Colors.green),
+                                      _buildButton(Colors.greenAccent),
                                     ],
                                   ),
                                 ),
@@ -154,7 +168,7 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
                                   padding: EdgeInsets.all(10),
                                   child: Row(
                                     children: <Widget>[
-                                      _buildButton(Colors.cyan),
+                                      _buildButton(Colors.cyanAccent),
                                       SizedBox(
                                         width: 10,
                                       ),
@@ -162,11 +176,11 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      _buildButton(Colors.indigo),
+                                      _buildButton(Colors.indigoAccent),
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      _buildButton(Colors.teal),
+                                      _buildButton(Colors.tealAccent),
                                     ],
                                   ),
                                 ),
@@ -195,6 +209,7 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
                     fireNote.id = model.tempNote.id;
                     fireNote.timeNow = DateTime.now().millisecondsSinceEpoch;
                     fireNote.timeSet = _timeMillsec;
+                    fireNote.tag=_value;
                     print('note id:' + fireNote.id.toString());
                     await _noteProvider.update(fireNote);
                   }
@@ -224,6 +239,15 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
                     labelText: '标题',
                     hintText: '输入你的标题',
                     border: OutlineInputBorder(),
+                    suffixIcon: DropdownButton(
+                      items: genWidget,
+                      onChanged: (value) {
+                        setState(() {
+                          _value = value;
+                        });
+                      },
+                      value: _value,
+                    ),
                   ),
                   cursorColor: Colors.red,
                   cursorWidth: 5,

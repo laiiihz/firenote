@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as Path;
 import 'package:scoped_model/scoped_model.dart';
@@ -147,7 +146,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  _buildButton(Colors.green),
+                                  _buildButton(Colors.greenAccent),
                                 ],
                               ),
                             ),
@@ -155,7 +154,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
                               padding: EdgeInsets.all(10),
                               child: Row(
                                 children: <Widget>[
-                                  _buildButton(Colors.cyan),
+                                  _buildButton(Colors.cyanAccent),
                                   SizedBox(
                                     width: 10,
                                   ),
@@ -167,7 +166,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  _buildButton(Colors.teal),
+                                  _buildButton(Colors.tealAccent),
                                 ],
                               ),
                             ),
