@@ -127,103 +127,113 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
               itemBuilder: (BuildContext context, int index) {
                 if (index == 0) {
                   return DrawerHeader(
-                    child: Row(
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(30),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: CircleAvatar(
-                              radius: 30,
-                              child: Icon(Icons.person),
-                              backgroundColor: model.primaryColor,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: FlatButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (value) {
-                                      return Dialog(
-                                        shape: null,
-                                        child: Container(
-                                          padding: EdgeInsets.all(10),
-                                          color: Colors.transparent,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              ListTile(
-                                                title: Text(
-                                                  '修改用户名',
-                                                  style:
-                                                      TextStyle(fontSize: 25),
-                                                ),
-                                              ),
-                                              TextField(
-                                                controller: _userNameController,
-                                                decoration: InputDecoration(
-                                                  labelText: '用户名',
-                                                  filled: true,
-                                                ),
-                                                maxLength: 10,
-                                              ),
-                                              ButtonBar(
-                                                children: <Widget>[
-                                                  FlatButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Text('取消'),
-                                                  ),
-                                                  RaisedButton(
-                                                    onPressed: () {
-                                                      model.setUserName(
-                                                          _userNameController
-                                                              .text);
-
-                                                      setUserShared() async {
-                                                        SharedPreferences sh =
-                                                            await SharedPreferences
-                                                                .getInstance();
-                                                        sh.setString(
-                                                            'userName',
-                                                            _userNameController
-                                                                    .text ??
-                                                                'fireNote');
-                                                      }
-
-                                                      setUserShared();
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Text('修改'),
-                                                    color: model.primaryColor,
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    });
-                              },
-                              child: Container(
-                                width: 120,
-                                child: Wrap(
-                                  children: <Widget>[
-                                    Text(
-                                      model.userName,
-                                      style: TextStyle(fontSize: 25),
-                                    )
-                                  ],
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.all(30),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: CircleAvatar(
+                                  radius: 30,
+                                  child: Icon(Icons.person),
+                                  backgroundColor: model.primaryColor,
                                 ),
                               ),
                             ),
-                          ),
+                            Container(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: FlatButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (value) {
+                                          return Dialog(
+                                            shape: null,
+                                            child: Container(
+                                              padding: EdgeInsets.all(10),
+                                              color: Colors.transparent,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  ListTile(
+                                                    title: Text(
+                                                      '修改用户名',
+                                                      style: TextStyle(
+                                                          fontSize: 25),
+                                                    ),
+                                                  ),
+                                                  TextField(
+                                                    controller:
+                                                        _userNameController,
+                                                    decoration: InputDecoration(
+                                                      labelText: '用户名',
+                                                      filled: true,
+                                                    ),
+                                                    maxLength: 10,
+                                                  ),
+                                                  ButtonBar(
+                                                    children: <Widget>[
+                                                      FlatButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Text('取消'),
+                                                      ),
+                                                      RaisedButton(
+                                                        onPressed: () {
+                                                          model.setUserName(
+                                                              _userNameController
+                                                                  .text);
+
+                                                          setUserShared() async {
+                                                            SharedPreferences
+                                                                sh =
+                                                                await SharedPreferences
+                                                                    .getInstance();
+                                                            sh.setString(
+                                                                'userName',
+                                                                _userNameController
+                                                                        .text ??
+                                                                    'fireNote');
+                                                          }
+
+                                                          setUserShared();
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Text('修改'),
+                                                        color:
+                                                            model.primaryColor,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  },
+                                  child: Container(
+                                    width: 120,
+                                    child: Wrap(
+                                      children: <Widget>[
+                                        Text(
+                                          model.userName,
+                                          style: TextStyle(fontSize: 25),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -231,23 +241,33 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                 }
                 if (index == 1) {
                   return Container(
-                    child: MaterialButton(
-                      onPressed: () {
-                        model.setPage(0);
-                        Navigator.pop(context);
-                        _pageController.animateToPage(0,
-                            duration: Duration(seconds: 2), curve: Curves.ease);
-                      },
-                      height: model.page == 0 ? 70 : 30,
-                      shape: null,
-                      color: model.page == 0 ? model.primaryColor : null,
-                      child: ListTile(
-                        leading: Icon(Icons.home),
-                        title: Text(
-                          '所有',
-                          style: TextStyle(fontSize: 15),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.delete_sweep),
                         ),
-                      ),
+                        MaterialButton(
+                          onPressed: () {
+                            model.setPage(0);
+                            Navigator.pop(context);
+                            _pageController.animateToPage(0,
+                                duration: Duration(seconds: 2),
+                                curve: Curves.ease);
+                          },
+                          height: model.page == 0 ? 70 : 30,
+                          shape: null,
+                          color: model.page == 0 ? model.primaryColor : null,
+                          child: ListTile(
+                            leading: Icon(Icons.home),
+                            title: Text(
+                              '所有',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 } else {
@@ -538,13 +558,17 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                   itemCount: model.notes == null ? 0 : model.notes.length,
                 );
               } else {
-                List<FireNote> tempNotes=model.noteWithTag(index);
-                if(tempNotes.length==0)return Center(
-                  child: Icon(Icons.tag_faces,size: 100,color: model.primaryColor,),
-                );
+                List<FireNote> tempNotes = model.noteWithTag(index);
+                if (tempNotes.length == 0)
+                  return Center(
+                    child: Icon(
+                      Icons.tag_faces,
+                      size: 100,
+                      color: model.primaryColor,
+                    ),
+                  );
                 return ListView.builder(
                   itemBuilder: (BuildContext context, int indexList) {
-
                     return Dismissible(
                       key: new Key(tempNotes[indexList].id.toString() +
                           Random().nextInt(1000).toString()),
@@ -554,10 +578,12 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                         child: ListTile(
                           title: Text(tempNotes[indexList].title),
                           subtitle: Text(tempNotes[indexList].text),
-                          trailing: Text(DateTime.fromMillisecondsSinceEpoch(tempNotes[indexList].timeSet).toString()),
+                          trailing: Text(DateTime.fromMillisecondsSinceEpoch(
+                                  tempNotes[indexList].timeSet)
+                              .toString()),
                         ),
                       ),
-                      onDismissed: (direction){
+                      onDismissed: (direction) {
                         if (direction == DismissDirection.startToEnd) {
                           _noteProvider.delete(tempNotes[indexList].id);
                           model.deleteNote(indexList);
@@ -586,7 +612,9 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                       ),
                       secondaryBackground: Container(
                         child: ListTile(
-                          trailing: Text(DateTime.fromMillisecondsSinceEpoch(tempNotes[indexList].timeNow).toString()),
+                          trailing: Text(DateTime.fromMillisecondsSinceEpoch(
+                                  tempNotes[indexList].timeNow)
+                              .toString()),
                         ),
                         color: Colors.cyan,
                       ),
