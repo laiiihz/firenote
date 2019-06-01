@@ -4,6 +4,16 @@ import 'package:firenote/Database/MainDatabase.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class AppModel extends Model {
+
+  bool _startAtOne=true;
+  get startAtOne=>_startAtOne;
+  setStartAtOne(bool value){
+    _startAtOne=value;
+    notifyListeners();
+  }
+
+
+
   ThemeData _appTheme = ThemeData.light();
   get appTheme => _appTheme;
   bool _isDarkModeOn = false;

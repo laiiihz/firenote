@@ -19,6 +19,15 @@ class _SplashState extends State<SplashPage> {
     super.initState();
     AppModel model = ScopedModel.of(context);
 
+    Future<bool> startAtOneShared()async{
+      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+      return sharedPreferences.getBool('startAtOne'??true);
+    }
+    startAtOneShared().then((onValue){
+      model.setStartAtOne(onValue);
+    });
+
+
     Future<bool> transparentShared() async {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
@@ -53,10 +62,8 @@ class _SplashState extends State<SplashPage> {
               await SharedPreferences.getInstance();
           return sharedPreferences.getInt('themeColor' ?? Colors.blue.value);
         }
-
         themeColorShared().then((color) {
           String tempString = '蓝色';
-
           switch (color) {
             case 0xFFD4E157:
               tempString = 'lime';

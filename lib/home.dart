@@ -10,7 +10,7 @@ import 'Edit/StandardEditor.dart';
 import 'dart:math';
 import 'Edit/EditorWithKey.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'OnStart/OnStartDialog.dart';
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _HomeState();
@@ -33,16 +33,25 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   Animation<double> _translateButton;
   Curve _curve = Curves.easeOut;
   bool _drawerDeleteState = false;
-  List<FireNote> tempNotes=[];
+  List<FireNote> tempNotes = [];
   final _pageController = PageController(initialPage: 0);
 
   List<Widget> widgetNotes = [];
+  _showDialog() async {
+    await Future.delayed(Duration(milliseconds: 50));
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return OnStartDialogPage();
+        });
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     AppModel model = ScopedModel.of(context);
+    if(model.startAtOne??true)_showDialog();
     getPath() async {
       var databasePath = await getDatabasesPath();
       var me = _noteProvider.open(Path.join(databasePath, 'app-0-1.db'));
@@ -303,7 +312,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                 model.deleteTag(tempIndex);
                                 _noteProvider.deleteAtAllTag(tempIndex);
                                 model.deleteAllNoteAtTag(tempIndex);
-
                               }),
                         ),
                       ),
@@ -363,7 +371,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                           new MaterialPageRoute(
                               builder: (context) => new StandardEditorPage()));
                     },
-                    tooltip: 'add',
+                    tooltip: '新建备忘',
                     child: Icon(Icons.add),
                   ),
                 ),
@@ -383,7 +391,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                           builder: (context) {
                             return AlertDialog(
                               shape: null,
-                              title: Text('add group'),
+                              title: Text('添加分组'),
                               content: Container(
                                 padding: EdgeInsets.all(10),
                                 child: Column(
@@ -391,7 +399,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                   children: <Widget>[
                                     TextField(
                                       decoration: InputDecoration(
-                                        labelText: 'group name',
+                                        labelText: '分组名称',
                                         prefixIcon: Icon(Icons.group_add),
                                         filled: true,
                                       ),
@@ -404,7 +412,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                           onPressed: () {
                                             Navigator.pop(context);
                                           },
-                                          child: Text('cancel'),
+                                          child: Text('取消'),
                                         ),
                                         RaisedButton(
                                           onPressed: () {
@@ -413,7 +421,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                             _groupTagController.clear();
                                             Navigator.pop(context);
                                           },
-                                          child: Text('add'),
+                                          child: Text('添加'),
                                           color: model.primaryColor,
                                         ),
                                       ],
@@ -424,7 +432,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                             );
                           });
                     },
-                    tooltip: 'add group',
+                    tooltip: '添加分组',
                     child: Icon(Icons.group_add),
                   ),
                 ),
@@ -483,6 +491,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                   icon: AnimatedIcons.menu_arrow,
                   progress: _animateIcon,
                 ),
+                tooltip: '^_^',
               ),
             ],
           ),
