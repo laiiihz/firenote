@@ -32,6 +32,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   Animation<Color> _animateColor;
   Animation<double> _translateButton;
   Curve _curve = Curves.easeOut;
+  bool _drawerDeleteState=false;
 
   final _pageController = PageController(initialPage: 0);
 
@@ -244,9 +245,16 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.delete_sweep),
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _drawerDeleteState=!_drawerDeleteState;
+                              });
+                            },
+                            icon: _drawerDeleteState?Icon(Icons.arrow_back):Icon(Icons.delete_sweep),
+                          ),
                         ),
                         MaterialButton(
                           onPressed: () {
@@ -286,6 +294,12 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                       child: ListTile(
                         leading: Icon(Icons.bookmark_border),
                         title: Text(model.tags[tempIndex]),
+                        trailing: Offstage(
+                          offstage: !_drawerDeleteState,
+                          child: IconButton(icon: Icon(Icons.delete_forever), onPressed: (){
+
+                          }),
+                        ),
                       ),
                     ),
                   );
