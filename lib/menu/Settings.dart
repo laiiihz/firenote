@@ -5,7 +5,6 @@ import 'package:firenote/menu/SettingsColor.dart';
 import 'DeveloperMode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'TestPage.dart';
 class SettingsPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _SettingsState();
@@ -115,22 +114,6 @@ class _SettingsState extends State<SettingsPage> {
                   },
                 ),
               ),
-              Card(
-                child: MaterialButton(
-                  child: ListTile(
-                    leading: Icon(Icons.tag_faces),
-                    title: Text('FOR TEST ONLY'),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new TestPagePage()));
-                  },
-                ),
-              ),
-
-
             ],
           ),
         );

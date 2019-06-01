@@ -1,3 +1,5 @@
+
+
 import 'package:sqflite/sqflite.dart';
 
 final String tableNote = 'note';
@@ -17,7 +19,6 @@ class FireNote {
   int timeNow;
   int timeSet;
   int tag;
-  //
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       columnTitle: title,
@@ -30,9 +31,7 @@ class FireNote {
     if (id != null) map[columnId] = id;
     return map;
   }
-
   FireNote();
-
   FireNote.fromMap(Map<String, dynamic> map) {
     id = map[columnId];
     title = map[columnTitle];
@@ -65,7 +64,6 @@ class NoteProvider {
     print(db);
   }
 
-  //插入操作
   Future<FireNote> insert(FireNote fireNote) async {
     fireNote.id = await db.insert(tableNote, fireNote.toMap());
     return fireNote;
@@ -120,9 +118,4 @@ class NoteProvider {
 
   Future close() async => db.close();
 
-  @override
-  String toString() {
-    // TODO: implement toString
-    return db.toString();
-  }
 }

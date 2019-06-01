@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firenote/model/appModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'JPushTest.dart';
 class DeveloperModePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _DeveloperModeState();
@@ -58,14 +57,6 @@ class _DeveloperModeState extends State<DeveloperModePage> {
 
                             openIPhoneMode();
                           },
-                        ),
-                      ),
-                    ),
-                    Card(
-                      child: MaterialButton(
-                        onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>JPushTestPage())),
-                        child: ListTile(
-                          title: Text('localPush Test'),
                         ),
                       ),
                     ),

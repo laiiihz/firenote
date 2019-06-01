@@ -190,7 +190,6 @@ class _StandardEditorState extends State<StandardEditorPage> {
               var databasePath = await getDatabasesPath();
               var me =
                   _noteProvider.open(Path.join(databasePath, 'app-0-1.db'));
-              List<FireNote> notes = [];
               FireNote fireNote = FireNote();
               insertOp() async {
                 fireNote.text = _textController.text;
