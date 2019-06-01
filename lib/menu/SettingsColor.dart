@@ -10,6 +10,12 @@ class SettingsColorPage extends StatefulWidget {
 
 class _SettingsColorState extends State<SettingsColorPage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<AppModel>(
       builder: (context, child, model) {
@@ -19,21 +25,22 @@ class _SettingsColorState extends State<SettingsColorPage> {
           ),
           body: ListView(
             children: <Widget>[
-              buildColor(Colors.blue, '蓝色'),
-              buildColor(Colors.pink, '粉色'),
-              buildColor(Colors.green, '绿色'),
-              buildColor(Colors.red, '红色'),
-              buildColor(Colors.grey, '灰色'),
-              buildColor(Colors.lightBlue, '亮蓝色'),
-              buildColor(Colors.lightGreen, '亮绿色'),
-              buildColor(Colors.blueGrey, '蓝灰色'),
-              buildColor(Colors.amber, '蜂蜜色'),
-              buildColor(Colors.deepPurple, '深紫色'),
-              buildColor(Colors.indigo, '靛青'),
-              buildColor(Colors.orange, '橘色'),
-              buildColor(Colors.deepOrange, '深橘色'),
-              buildColor(Colors.brown, '棕色'),
-              buildColor(Colors.cyan, '蓝绿色'),
+              buildColor(Color(0xFFD4E157), 'lime'),
+              buildColor(Color(0xFF2196F3), '蓝色'),
+              buildColor(Color(0xFFF06292), '粉色'),
+              buildColor(Color(0xFF4CAF50), '亮绿色'),
+              buildColor(Color(0xFFF44336), '红色'),
+              buildColor(Color(0xFF9E9E9E), '灰色'),
+              buildColor(Color(0xFF03A9F4), '亮蓝色'),
+              buildColor(Color(0xFF4CAF50), '绿色'),
+              buildColor(Color(0xFF546E7A), '蓝灰色'),
+              buildColor(Color(0xFFFFC107), '蜂蜜色'),
+              buildColor(Color(0xFF673AB7), '深紫色'),
+              buildColor(Color(0xFF26A69A), '靛青'),
+              buildColor(Color(0xFFFFA726), '橘色'),
+              buildColor(Color(0xFFFF7043), '深橘色'),
+              buildColor(Color(0xFFA1887F), '棕色'),
+              buildColor(Color(0xFF26C6DA), '蓝绿色'),
             ],
           ),
         );

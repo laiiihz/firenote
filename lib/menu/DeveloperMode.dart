@@ -60,6 +60,26 @@ class _DeveloperModeState extends State<DeveloperModePage> {
                         ),
                       ),
                     ),
+                    Card(
+                      child: ListTile(
+                        leading: Icon(
+                          model.iphoneStyleOn
+                              ? Icons.phone_iphone
+                              : Icons.phone_android,
+                          size: 30,
+                        ),
+                        title: Text('nav color'),
+                        subtitle: model.iphoneStyleOn
+                            ? Text('null')
+                            : Text('null'),
+                        trailing: Switch(
+                          value: model.navColorPaint,
+                          onChanged: (value) {
+                            model.setNavigatorColorPaint(value,model.primaryColor);
+                          },
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

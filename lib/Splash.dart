@@ -55,9 +55,61 @@ class _SplashState extends State<SplashPage> {
         }
 
         themeColorShared().then((color) {
+          String tempString = '蓝色';
+
+          switch (color) {
+            case 0xFFD4E157:
+              tempString = 'lime';
+              break;
+            case 0xFF2196F3:
+              tempString = '蓝色';
+              break;
+            case 0xFFF06292:
+              tempString = '粉色';
+              break;
+            case 0xFF4CAF50:
+              tempString = '亮绿色';
+              break;
+            case 0xFFF44336:
+              tempString = '红色';
+              break;
+            case 0xFF9E9E9E:
+              tempString = '灰色';
+              break;
+            case 0xFF03A9F4:
+              tempString = '亮蓝色';
+              break;
+            case 0xFF4CAF50:
+              tempString = '绿色';
+              break;
+            case 0xFF546E7A:
+              tempString = '蓝灰色';
+              break;
+            case 0xFFFFC107:
+              tempString = '蜂蜜色';
+              break;
+            case 0xFF673AB7:
+              tempString = '深紫色';
+              break;
+            case 0xFF26A69A:
+              tempString = '靛青';
+              break;
+            case 0xFFFFA726:
+              tempString = '橘色';
+              break;
+            case 0xFFFF7043:
+              tempString = '深橘色';
+              break;
+            case 0xFFA1887F:
+              tempString = '棕色';
+              break;
+            case 0xFF26C6DA:
+              tempString = '蓝绿色';
+              break;
+          }
           model.setPrimaryColor(
               Color(color ?? Colors.blue.value) ?? Colors.blue,
-              color.toString() ?? '蓝色');
+              tempString?? '蓝色');
         });
       }
     });
@@ -72,12 +124,13 @@ class _SplashState extends State<SplashPage> {
       model.setIPhoneStyleOn(onValue ?? false);
     });
 
-    Future<List<String>> tagsShared() async{
-      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-      return sharedPreferences.getStringList('tags')??['all'];
+    Future<List<String>> tagsShared() async {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      return sharedPreferences.getStringList('tags') ?? ['all'];
     }
 
-    tagsShared().then((onValue){
+    tagsShared().then((onValue) {
       model.setTags(onValue);
     });
 

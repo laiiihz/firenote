@@ -97,6 +97,16 @@ class AppModel extends Model {
     notifyListeners();
   }
 
+  bool _navColorPaint=false;
+  get navColorPaint=>_navColorPaint;
+
+  setNavigatorColorPaint(bool paint,Color colorMe){
+    _navColorPaint=paint;
+    SystemUiOverlayStyle systemUiOverlayStyle=SystemUiOverlayStyle(systemNavigationBarColor: paint?colorMe:Colors.black);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+    notifyListeners();
+  }
+
   int _page=0;
   get page=>_page;
   setPage(int pageMe){
