@@ -114,6 +114,10 @@ class NoteProvider {
     return await db.delete(tableNote,where: null,whereArgs: null);
   }
 
+  Future deleteAtAllTag(int index)async{
+    return await db.delete(tableNote,where: '$columnTag=?',whereArgs: [index]);
+  }
+
   Future close() async => db.close();
 
   @override

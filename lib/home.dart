@@ -32,8 +32,8 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   Animation<Color> _animateColor;
   Animation<double> _translateButton;
   Curve _curve = Curves.easeOut;
-  bool _drawerDeleteState=false;
-
+  bool _drawerDeleteState = false;
+  List<FireNote> tempNotes=[];
   final _pageController = PageController(initialPage: 0);
 
   List<Widget> widgetNotes = [];
@@ -120,7 +120,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<AppModel>(
       builder: (context, child, model) {
-        print(model.tags);
         return Scaffold(
           drawer: Drawer(
             child: ListView.builder(
@@ -250,10 +249,12 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                           child: IconButton(
                             onPressed: () {
                               setState(() {
-                                _drawerDeleteState=!_drawerDeleteState;
+                                _drawerDeleteState = !_drawerDeleteState;
                               });
                             },
-                            icon: _drawerDeleteState?Icon(Icons.arrow_back):Icon(Icons.delete_sweep),
+                            icon: _drawerDeleteState
+                                ? Icon(Icons.arrow_back)
+                                : Icon(Icons.delete_sweep),
                           ),
                         ),
                         MaterialButton(
@@ -296,9 +297,14 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                         title: Text(model.tags[tempIndex]),
                         trailing: Offstage(
                           offstage: !_drawerDeleteState,
-                          child: IconButton(icon: Icon(Icons.delete_forever), onPressed: (){
+                          child: IconButton(
+                              icon: Icon(Icons.delete_forever),
+                              onPressed: () {
+                                model.deleteTag(tempIndex);
+                                _noteProvider.deleteAtAllTag(tempIndex);
+                                model.deleteAllNoteAtTag(tempIndex);
 
-                          }),
+                              }),
                         ),
                       ),
                     ),
@@ -482,6 +488,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
           body: PageView.builder(
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
+                print(model.notes.length);
                 return ListView.builder(
                   itemBuilder: (BuildContext context, int index) {
                     String temp = model.notes[index].text;
@@ -562,6 +569,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                             duration: Duration(seconds: 1),
                           );
                           Scaffold.of(context).showSnackBar(snackBar);
+
                           setState(() {
                             widgetNotes = widgetNotes;
                           });
@@ -572,7 +580,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                   itemCount: model.notes == null ? 0 : model.notes.length,
                 );
               } else {
-                List<FireNote> tempNotes = model.noteWithTag(index);
+                tempNotes = model.noteWithTag(index);
                 if (tempNotes.length == 0)
                   return Center(
                     child: Icon(

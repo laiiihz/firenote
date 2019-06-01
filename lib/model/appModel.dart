@@ -150,6 +150,16 @@ class AppModel extends Model {
     clearTagShared();
     notifyListeners();
   }
+  deleteTag(int index){
+    _tags.removeAt(index);
+    _tagCount--;
+    deleteTagShared()async{
+      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+      sharedPreferences.setStringList('tags',_tags);
+    }
+    deleteTagShared();
+    notifyListeners();
+  }
 
 
   List<FireNote> noteWithTag(int index){
@@ -160,5 +170,14 @@ class AppModel extends Model {
       }
     }
     return result;
+  }
+
+  deleteAllNoteAtTag(int index){
+    for (var i = _notes.length-1; i>=0; i--) {
+      if(_notes[i].tag==index){
+        _notes.removeAt(i);
+      }
+      notifyListeners();
+    }
   }
 }
