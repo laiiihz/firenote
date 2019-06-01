@@ -180,4 +180,10 @@ class AppModel extends Model {
       notifyListeners();
     }
   }
+  int _pageNow=0;
+  get pageNow=>_pageNow;
+  changePage(double page){
+    _pageNow=page.toInt();
+    notifyListeners();
+  }
 }

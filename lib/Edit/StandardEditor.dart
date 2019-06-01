@@ -69,6 +69,9 @@ class _StandardEditorState extends State<StandardEditorPage> {
       });
     });
     AppModel model=ScopedModel.of(context);
+    setState(() {
+      _value=model.pageNow;
+    });
     List<String> tag=model.tags;
     for (var i = 0; i < tag.length; ++i) {
       genWidget.add(

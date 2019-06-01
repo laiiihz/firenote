@@ -357,6 +357,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                   child: FloatingActionButton(
                     heroTag: 'btn3',
                     onPressed: () {
+                      model.changePage(_pageController.page);
                       Navigator.push(
                           context,
                           new MaterialPageRoute(
@@ -488,7 +489,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
           body: PageView.builder(
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
-                print(model.notes.length);
                 return ListView.builder(
                   itemBuilder: (BuildContext context, int index) {
                     String temp = model.notes[index].text;
