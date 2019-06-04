@@ -38,16 +38,8 @@ android {
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        ndk {
-            //选择要添加的对应 cpu 类型的 .so 库。
-            abiFilters 'armeabi', 'armeabi-v7a', 'x86', 'x86_64', 'mips', 'mips64', 'arm64-v8a'
-        }
-        manifestPlaceholders = [
-                JPUSH_PKGNAME : applicationId,
-                JPUSH_APPKEY : "6c3f37c8eb55fba38aa5ac72",
-                JPUSH_CHANNEL : "developer-default",
-        ]
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -65,6 +57,6 @@ flutter {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 }
