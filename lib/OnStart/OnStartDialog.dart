@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnStartDialogPage extends StatefulWidget {
@@ -8,7 +7,6 @@ class OnStartDialogPage extends StatefulWidget {
 }
 
 class _OnStartDialogState extends State<OnStartDialogPage> with SingleTickerProviderStateMixin  {
-  double _elevation=100.0;
   Animation<double> _animation;
   AnimationController _animationController;
 
