@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'model/appModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'generated/i18n.dart';
+import 'home.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -10,7 +12,19 @@ class SplashPage extends StatefulWidget {
 
 class _SplashState extends State<SplashPage> {
   void go2Home() {
-    Navigator.of(context).pushReplacementNamed('/HomePage');
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        transitionDuration: Duration(milliseconds: 2000),
+        pageBuilder: (BuildContext context, Animation animation,
+            Animation secondaryAnimation) {
+          return FadeTransition(
+            opacity: animation,
+            child: HomePage(),
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -19,14 +33,15 @@ class _SplashState extends State<SplashPage> {
     super.initState();
     AppModel model = ScopedModel.of(context);
 
-    Future<bool> startAtOneShared()async{
-      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-      return sharedPreferences.getBool('startAtOne'??true);
+    Future<bool> startAtOneShared() async {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      return sharedPreferences.getBool('startAtOne' ?? true);
     }
-    startAtOneShared().then((onValue){
+
+    startAtOneShared().then((onValue) {
       model.setStartAtOne(onValue);
     });
-
 
     Future<bool> transparentShared() async {
       SharedPreferences sharedPreferences =
@@ -62,6 +77,7 @@ class _SplashState extends State<SplashPage> {
               await SharedPreferences.getInstance();
           return sharedPreferences.getInt('themeColor' ?? Colors.blue.value);
         }
+
         themeColorShared().then((color) {
           String tempString = '蓝色';
           switch (color) {
@@ -116,7 +132,7 @@ class _SplashState extends State<SplashPage> {
           }
           model.setPrimaryColor(
               Color(color ?? Colors.blue.value) ?? Colors.blue,
-              tempString?? '蓝色');
+              tempString ?? '蓝色');
         });
       }
     });
@@ -141,7 +157,7 @@ class _SplashState extends State<SplashPage> {
       model.setTags(onValue);
     });
 
-    new Future.delayed(Duration(milliseconds: 700), go2Home);
+    new Future.delayed(Duration(milliseconds: 1000), go2Home);
   }
 
   @override
@@ -158,6 +174,16 @@ class _SplashState extends State<SplashPage> {
                 Image.asset(
                   'assets/firenote.png',
                   width: 128,
+                ),
+                Hero(
+                  tag: 'title',
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      S.of(context).appName,
+                      style: TextStyle(fontSize: 30, color: Colors.white),
+                    ),
+                  ),
                 ),
                 CircularProgressIndicator(),
               ],

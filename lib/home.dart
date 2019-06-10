@@ -11,6 +11,8 @@ import 'dart:math';
 import 'Edit/EditorWithKey.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'OnStart/OnStartDialog.dart';
+import 'generated/i18n.dart';
+
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _HomeState();
@@ -51,7 +53,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
     // TODO: implement initState
     super.initState();
     AppModel model = ScopedModel.of(context);
-    if(model.startAtOne??true)_showDialog();
+    if (model.startAtOne ?? true) _showDialog();
     getPath() async {
       var databasePath = await getDatabasesPath();
       var me = _noteProvider.open(Path.join(databasePath, 'app-0-1.db'));
@@ -61,9 +63,9 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
       }).then((n) {
         FireNote tempNote = FireNote();
         tempNote.color = 0x33ffffff;
-        tempNote.text = '右下角点击开始新建';
+        tempNote.text = S.of(context).new_text;
         tempNote.id = 9999999;
-        tempNote.title = '欢迎使用';
+        tempNote.title = S.of(context).welcome_and_use;
         tempNote.tag = 0;
         tempNote.timeNow = DateTime.now().millisecondsSinceEpoch;
         if (tempNotes == null) {
@@ -322,7 +324,13 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
             ),
           ),
           appBar: AppBar(
-            title: Text('FireNote'),
+            title: Hero(
+              tag: 'title',
+              child: Material(
+                color: Colors.transparent,
+                child: Text(S.of(context).appName,style: TextStyle(fontSize: 30,color: Colors.white),),
+              ),
+            ),
             actions: <Widget>[
               PopupMenuButton(
                 tooltip: '菜单',
