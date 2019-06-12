@@ -21,7 +21,7 @@ class S implements WidgetsLocalizations {
 
   String get appName => "FireNote";
   String get new_text => "Right Bottom Start New Note";
-  String get welcome_and_use => "欢迎使用";
+  String get welcome_and_use => "Welcome";
 }
 
 class $en extends S {

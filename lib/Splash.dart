@@ -12,15 +12,14 @@ class SplashPage extends StatefulWidget {
 
 class _SplashState extends State<SplashPage> {
   void go2Home() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       PageRouteBuilder(
         transitionDuration: Duration(milliseconds: 2000),
         pageBuilder: (BuildContext context, Animation animation,
             Animation secondaryAnimation) {
           return FadeTransition(
-            opacity: animation,
-            child: HomePage(),
+            child: HomePage(), opacity: animation,
           );
         },
       ),

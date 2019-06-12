@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as Path;
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firenote/Database/MainDatabase.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:firenote/model/appModel.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class StandardEditorPage extends StatefulWidget {
   @override
@@ -21,7 +23,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
   DateTime _nowTime = DateTime.now();
   Timer countdownTimer;
   var _value = 0;
-  List<DropdownMenuItem<int>> genWidget=[];
+  List<DropdownMenuItem<int>> genWidget = [];
 
   ///***DATABASE***/
   NoteProvider _noteProvider = NoteProvider();
@@ -59,6 +61,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
     }
   }
 
+  FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
   @override
   void initState() {
     // TODO: implement initState
@@ -68,11 +71,11 @@ class _StandardEditorState extends State<StandardEditorPage> {
         _nowTime = DateTime.now();
       });
     });
-    AppModel model=ScopedModel.of(context);
+    AppModel model = ScopedModel.of(context);
     setState(() {
-      _value=model.pageNow;
+      _value = model.pageNow;
     });
-    List<String> tag=model.tags;
+    List<String> tag = model.tags;
     for (var i = 0; i < tag.length; ++i) {
       genWidget.add(
         DropdownMenuItem(
@@ -82,6 +85,16 @@ class _StandardEditorState extends State<StandardEditorPage> {
       );
     }
     countdownTimer.tick;
+    var initAndroidSettings =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initIOSSettings = IOSInitializationSettings();
+    var initSetting =
+    InitializationSettings(initAndroidSettings, initIOSSettings);
+    _flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    _flutterLocalNotificationsPlugin.initialize(
+      initSetting,
+    );
   }
 
   @override
@@ -197,7 +210,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
                 fireNote.color = _myColor.value;
                 fireNote.timeNow = DateTime.now().millisecondsSinceEpoch;
                 fireNote.timeSet = _timeMillsec;
-                fireNote.tag=_value;
+                fireNote.tag = _value;
                 print('dateTime set');
                 print(fireNote.timeSet);
                 await _noteProvider.insert(fireNote);
@@ -210,9 +223,44 @@ class _StandardEditorState extends State<StandardEditorPage> {
                   print('fail');
                   print(e);
                 }
+              }).then((_){
+                var androidSpecific = AndroidNotificationDetails(
+                  'tech.laihz.firenote',
+                  'laihz_notificate',
+                  'here is the desc',
+                  importance: Importance.Max,
+                  priority: Priority.High,
+                );
+                var iOSSpecific = IOSNotificationDetails();
+                var platformSpecific =
+                NotificationDetails(androidSpecific, iOSSpecific);
+
+                int timeSet=fireNote.timeSet;
+                int timeNow=DateTime.now().millisecondsSinceEpoch;
+                print('test@@@@@@@@');
+                print(timeSet);
+                print(timeNow);
+                int durationTime=timeSet-timeNow;
+                _notificationMe() async {
+                  var timeMake = DateTime.now().add(Duration(milliseconds: durationTime));
+                  await _flutterLocalNotificationsPlugin.schedule(
+                    Random().nextInt(99999),
+                    fireNote.title,
+                    fireNote.text,
+                    timeMake,
+                    platformSpecific,
+                    payload: 'test playload',
+                  );
+
+                }
+                _notificationMe();
               });
               AppModel model = ScopedModel.of(context);
               model.addNote(fireNote);
+
+
+
+
               Navigator.pop(context);
             },
           ),

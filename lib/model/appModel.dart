@@ -12,8 +12,6 @@ class AppModel extends Model {
     notifyListeners();
   }
 
-
-
   ThemeData _appTheme = ThemeData.light();
   get appTheme => _appTheme;
   bool _isDarkModeOn = false;
