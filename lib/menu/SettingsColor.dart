@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firenote/model/appModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:firenote/generated/i18n.dart';
 class SettingsColorPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _SettingsColorState();
@@ -21,26 +21,25 @@ class _SettingsColorState extends State<SettingsColorPage> {
       builder: (context, child, model) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('主题色'),
+            title: Text(S.of(context).theme_color),
           ),
           body: ListView(
             children: <Widget>[
-              buildColor(Color(0xFFD4E157), 'lime'),
-              buildColor(Color(0xFF2196F3), '蓝色'),
-              buildColor(Color(0xFFF06292), '粉色'),
-              buildColor(Color(0xFF4CAF50), '亮绿色'),
-              buildColor(Color(0xFFF44336), '红色'),
-              buildColor(Color(0xFF9E9E9E), '灰色'),
-              buildColor(Color(0xFF03A9F4), '亮蓝色'),
-              buildColor(Color(0xFF4CAF50), '绿色'),
-              buildColor(Color(0xFF546E7A), '蓝灰色'),
-              buildColor(Color(0xFFFFC107), '蜂蜜色'),
-              buildColor(Color(0xFF673AB7), '深紫色'),
-              buildColor(Color(0xFF26A69A), '靛青'),
-              buildColor(Color(0xFFFFA726), '橘色'),
-              buildColor(Color(0xFFFF7043), '深橘色'),
-              buildColor(Color(0xFFA1887F), '棕色'),
-              buildColor(Color(0xFF26C6DA), '蓝绿色'),
+              buildColor(Color(0xFFD4E157), S.of(context).lime),
+              buildColor(Color(0xFF2196F3), S.of(context).blue),
+              buildColor(Color(0xFFF06292), S.of(context).pink),
+              buildColor(Color(0xFF4CAF50), S.of(context).light_green),
+              buildColor(Color(0xFFF44336), S.of(context).red),
+              buildColor(Color(0xFF9E9E9E), S.of(context).grey),
+              buildColor(Color(0xFF03A9F4), S.of(context).light_blue),
+              buildColor(Color(0xFF4CAF50), S.of(context).green),
+              buildColor(Color(0xFF546E7A), S.of(context).blue_grey),
+              buildColor(Color(0xFFFFC107), S.of(context).honey),
+              buildColor(Color(0xFF673AB7), S.of(context).deep_purple),
+              buildColor(Color(0xFF26A69A), S.of(context).teal),
+              buildColor(Color(0xFFFFA726), S.of(context).orange),
+              buildColor(Color(0xFFFF7043), S.of(context).dark_orange),
+              buildColor(Color(0xFF26C6DA), S.of(context).blue_with_green),
             ],
           ),
         );

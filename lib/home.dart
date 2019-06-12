@@ -282,7 +282,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                           child: ListTile(
                             leading: Icon(Icons.home),
                             title: Text(
-                              '所有',
+                              S.of(context).all_group,
                               style: TextStyle(fontSize: 15),
                             ),
                           ),
@@ -333,16 +333,16 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
             ),
             actions: <Widget>[
               PopupMenuButton(
-                tooltip: '菜单',
+                tooltip: S.of(context).pop_menu,
                 itemBuilder: (BuildContext context) =>
                     <PopupMenuEntry<_menuValue>>[
                       PopupMenuItem<_menuValue>(
                         value: _menuValue.settings,
-                        child: Text('设置'),
+                        child: Text(S.of(context).pop_settings),
                       ),
                       PopupMenuItem<_menuValue>(
                         value: _menuValue.about,
-                        child: Text('关于'),
+                        child: Text(S.of(context).pop_about),
                       ),
                     ],
                 onSelected: (menuValue) {
@@ -379,7 +379,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                           new MaterialPageRoute(
                               builder: (context) => new StandardEditorPage()));
                     },
-                    tooltip: '新建备忘',
+                    tooltip: S.of(context).create_note,
                     child: Icon(Icons.add),
                   ),
                 ),
@@ -440,7 +440,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                             );
                           });
                     },
-                    tooltip: '添加分组',
+                    tooltip: S.of(context).add_group,
                     child: Icon(Icons.group_add),
                   ),
                 ),
@@ -483,7 +483,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                             );
                           });
                     },
-                    tooltip: '清除所有备忘',
+                    tooltip: S.of(context).clear_all_note,
                     child: Icon(Icons.clear_all),
                   ),
                 ),
@@ -499,7 +499,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                   icon: AnimatedIcons.menu_arrow,
                   progress: _animateIcon,
                 ),
-                tooltip: '^_^',
+                tooltip: S.of(context).smile,
               ),
             ],
           ),

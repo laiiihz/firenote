@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firenote/Database/MainDatabase.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firenote/generated/i18n.dart';
 class AppModel extends Model {
 
   bool _startAtOne=true;

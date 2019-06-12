@@ -4,6 +4,7 @@ import 'package:firenote/model/appModel.dart';
 import 'package:firenote/menu/SettingsColor.dart';
 import 'DeveloperMode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firenote/generated/i18n.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -18,7 +19,7 @@ class _SettingsState extends State<SettingsPage> {
       builder: (context, child, model) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('设置'),
+            title: Text(S.of(context).pop_settings),
           ),
           body: ListView(
             children: <Widget>[
@@ -30,9 +31,9 @@ class _SettingsState extends State<SettingsPage> {
                         : Icons.brightness_7,
                     size: 35,
                   ),
-                  title: Text('夜间模式'),
+                  title: Text(S.of(context).night_mode),
                   subtitle:
-                      model.isDarkModeOn ? Text('关闭夜间模式') : Text('开启夜间模式'),
+                      model.isDarkModeOn ? Text(S.of(context).night_mode_off) : Text(S.of(context).night_mode_on),
                   trailing: Switch(
                       value: model.isDarkModeOn,
                       onChanged: (value) {
@@ -55,9 +56,9 @@ class _SettingsState extends State<SettingsPage> {
                         : Icons.fullscreen_exit,
                     size: 35,
                   ),
-                  title: Text('沉浸模式'),
+                  title: Text(S.of(context).immersive_mode),
                   subtitle:
-                  model.statusBarTransparent ? Text('关闭沉浸模式') : Text('开启沉浸模式'),
+                  model.statusBarTransparent ? Text(S.of(context).immersive_mode_off) : Text(S.of(context).immersive_mode_on),
                   trailing: Switch(
                       value: model.statusBarTransparent,
                       onChanged: (value) {
@@ -79,9 +80,9 @@ class _SettingsState extends State<SettingsPage> {
                     size: 35,
                     color: model.primaryColor,
                   ),
-                  title: Text('主题色'),
+                  title: Text(S.of(context).theme_color),
                   subtitle:
-                      model.isDarkModeOn ? Text('不可用') : Text(model.colorName),
+                      model.isDarkModeOn ? Text(S.of(context).nulls) : Text(model.colorName),
                   trailing: MaterialButton(
                     onPressed: model.isDarkModeOn
                         ? null
@@ -104,7 +105,7 @@ class _SettingsState extends State<SettingsPage> {
                 child: MaterialButton(
                   child: ListTile(
                     leading: Icon(Icons.developer_mode),
-                    title: Text('实验性功能'),
+                    title: Text(S.of(context).experiment_settings),
                   ),
                   onPressed: () {
                     Navigator.push(

@@ -19,8 +19,47 @@ class S implements WidgetsLocalizations {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
+  String get add_group => "add group";
+  String get all_group => "GROUP ALL";
   String get appName => "FireNote";
+  String get blue => "blue";
+  String get blue_grey => "blue_grey";
+  String get blue_with_green => "blue_with_green";
+  String get choose_color => "choose color";
+  String get clear_all_note => "clear all note";
+  String get create_note => "new note";
+  String get create_time_pre => "create time:";
+  String get dark_orange => "dark_orange";
+  String get deep_purple => "deep_purple";
+  String get enter_title => "ENTER TITLE";
+  String get experiment_settings => "experiment_settings";
+  String get green => "green";
+  String get grey => "grey";
+  String get honey => "honey";
+  String get immersive_mode => "IMMERSIVE MODE";
+  String get immersive_mode_off => "IMMERSIVE MODE OFF";
+  String get immersive_mode_on => "IMMERSIVE MODE ON";
+  String get light_blue => "light_blue";
+  String get light_green => "light_green";
+  String get lime => "lime";
   String get new_text => "Right Bottom Start New Note";
+  String get night_mode => "NIGHT MODE";
+  String get night_mode_off => "NIGHT MODE OFF";
+  String get night_mode_on => "NIGHT MODE ON";
+  String get nulls => "NULL";
+  String get orange => "orange";
+  String get pink => "pink";
+  String get pop_about => "About";
+  String get pop_menu => "Menu";
+  String get pop_settings => "Settings";
+  String get red => "red";
+  String get reminder_time => "reminder time:";
+  String get smile => "^_^";
+  String get teal => "teal";
+  String get theme_color => "Theme Color";
+  String get title_note => "TITLE";
+  String get update_note => "update note";
+  String get update_time => "update time:";
   String get welcome_and_use => "Welcome";
 }
 
@@ -35,11 +74,89 @@ class $zh extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get new_text => "右下角点击开始新建";
+  String get theme_color => "主题色";
+  @override
+  String get pink => "粉色";
+  @override
+  String get immersive_mode_on => "开启沉浸模式";
+  @override
+  String get create_time_pre => "创建时间:";
+  @override
+  String get create_note => "新建备忘";
+  @override
+  String get nulls => "不可用";
+  @override
+  String get night_mode => "夜间模式";
+  @override
+  String get blue_grey => "蓝灰色";
+  @override
+  String get smile => "^_^";
+  @override
+  String get red => "红色";
+  @override
+  String get clear_all_note => "清除所有备忘";
+  @override
+  String get update_time => "更新时间:";
   @override
   String get welcome_and_use => "欢迎使用";
   @override
+  String get honey => "蜂蜜色";
+  @override
+  String get dark_orange => "深橘色";
+  @override
+  String get experiment_settings => "实验性功能";
+  @override
+  String get reminder_time => "提醒时间:";
+  @override
+  String get night_mode_on => "开启夜间模式";
+  @override
+  String get green => "绿色";
+  @override
+  String get choose_color => "选择颜色";
+  @override
   String get appName => "FireNote";
+  @override
+  String get lime => "lime";
+  @override
+  String get blue_with_green => "蓝绿色";
+  @override
+  String get update_note => "更新备忘";
+  @override
+  String get deep_purple => "深紫色";
+  @override
+  String get enter_title => "输入你的标题";
+  @override
+  String get light_blue => "亮蓝色";
+  @override
+  String get teal => "靛青";
+  @override
+  String get all_group => "所有";
+  @override
+  String get pop_menu => "菜单";
+  @override
+  String get grey => "灰色";
+  @override
+  String get orange => "橘色";
+  @override
+  String get title_note => "标题";
+  @override
+  String get pop_about => "关于";
+  @override
+  String get add_group => "添加分组";
+  @override
+  String get new_text => "右下角点击开始新建";
+  @override
+  String get immersive_mode => "沉浸模式";
+  @override
+  String get blue => "蓝色";
+  @override
+  String get night_mode_off => "关闭夜间模式";
+  @override
+  String get light_green => "亮绿色";
+  @override
+  String get immersive_mode_off => "关闭沉浸模式";
+  @override
+  String get pop_settings => "设置";
 }
 
 class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {

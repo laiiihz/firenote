@@ -5,7 +5,7 @@ import 'package:path/path.dart' as Path;
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firenote/model/appModel.dart';
 import 'dart:async';
-
+import 'package:firenote/generated/i18n.dart';
 class EditorWithKeyPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _EditorWithKeyState();
@@ -121,7 +121,7 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
       builder: (context, child, model) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('更新备忘'),
+            title: Text(S.of(context).update_note),
             actions: <Widget>[
               Padding(
                 padding: EdgeInsets.all(5),
@@ -140,7 +140,7 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
                       context: context,
                       builder: (context) {
                         return new SimpleDialog(
-                          title: Text('选择颜色'),
+                          title: Text(S.of(context).choose_color),
                           children: <Widget>[
                             Column(
                               children: <Widget>[
@@ -236,8 +236,8 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
                   controller: _titleController,
                   decoration: InputDecoration(
                     filled: true,
-                    labelText: '标题',
-                    hintText: '输入你的标题',
+                    labelText: S.of(context).title_note,
+                    hintText: S.of(context).enter_title,
                     border: OutlineInputBorder(),
                     suffixIcon: DropdownButton(
                       items: genWidget,
@@ -270,7 +270,7 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
                 padding: EdgeInsets.all(5),
                 child: Card(
                   child: ListTile(
-                    leading: Text('创建时间:' +
+                    leading: Text(S.of(context).create_note +
                         DateTime.fromMillisecondsSinceEpoch(
                                 model.tempNote.timeNow)
                             .toString()
@@ -283,7 +283,7 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
                 child: Card(
                   child: ListTile(
                     leading:
-                        Text('更新时间:' + _nowTime.toString().substring(0, 19)),
+                        Text(S.of(context).update_time + _nowTime.toString().substring(0, 19)),
                   ),
                 ),
               ),
@@ -291,7 +291,7 @@ class _EditorWithKeyState extends State<EditorWithKeyPage> {
                 padding: EdgeInsets.all(5),
                 child: Card(
                   child: ListTile(
-                    leading: Text('提醒时间:' +
+                    leading: Text(S.of(context).reminder_time+
                         DateTime.fromMillisecondsSinceEpoch(_timeMillsec ?? 0)
                             .toString()
                             .substring(0, 16)),

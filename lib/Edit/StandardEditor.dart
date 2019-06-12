@@ -7,7 +7,7 @@ import 'package:firenote/Database/MainDatabase.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:firenote/model/appModel.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
+import 'package:firenote/generated/i18n.dart';
 class StandardEditorPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _StandardEditorState();
@@ -123,7 +123,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('新建备忘'),
+        title: Text(S.of(context).create_note),
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.all(5),
@@ -142,7 +142,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
                   context: context,
                   builder: (context) {
                     return new SimpleDialog(
-                      title: Text('选择颜色'),
+                      title: Text(S.of(context).choose_color),
                       children: <Widget>[
                         Column(
                           children: <Widget>[
@@ -211,8 +211,6 @@ class _StandardEditorState extends State<StandardEditorPage> {
                 fireNote.timeNow = DateTime.now().millisecondsSinceEpoch;
                 fireNote.timeSet = _timeMillsec;
                 fireNote.tag = _value;
-                print('dateTime set');
-                print(fireNote.timeSet);
                 await _noteProvider.insert(fireNote);
               }
 
@@ -274,8 +272,8 @@ class _StandardEditorState extends State<StandardEditorPage> {
               controller: _titleController,
               decoration: InputDecoration(
                 filled: true,
-                labelText: '标题',
-                hintText: '输入你的标题',
+                labelText: S.of(context).title_note,
+                hintText: S.of(context).enter_title,
                 border: OutlineInputBorder(),
                 suffixIcon: DropdownButton(
                   items: genWidget,
@@ -309,7 +307,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
             padding: EdgeInsets.all(5),
             child: Card(
               child: ListTile(
-                leading: Text('创建时间:' + _nowTime.toString().substring(0, 19)),
+                leading: Text(S.of(context).create_time_pre + _nowTime.toString().substring(0, 19)),
               ),
             ),
           ),
@@ -317,7 +315,7 @@ class _StandardEditorState extends State<StandardEditorPage> {
             padding: EdgeInsets.all(5),
             child: Card(
               child: ListTile(
-                leading: Text('提醒时间:' +
+                leading: Text(S.of(context).reminder_time +
                     DateTime.fromMillisecondsSinceEpoch(_timeMillsec ?? 0)
                         .toString()
                         .substring(0, 16)),

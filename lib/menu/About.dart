@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firenote/model/appModel.dart';
-
+import 'package:firenote/generated/i18n.dart';
 class AboutPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _AboutState();
@@ -11,7 +11,7 @@ class AboutPage extends StatefulWidget {
 class _AboutState extends State<AboutPage> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    
     return ScopedModelDescendant<AppModel>(
       builder: (context, child, model) {
         return Scaffold(
