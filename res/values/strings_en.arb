@@ -40,5 +40,11 @@
   "reminder_time": "reminder time:",
   "update_note": "update note",
   "update_time": "update time:",
-  "all_group": "GROUP ALL"
+  "all_group": "GROUP ALL",
+  "group_name": "GROUP NAME",
+  "cancel": "CANCEL",
+  "add_group_btn": "ADD",
+  "update_username": "UPDATE USERNAME",
+  "username": "USERNAME",
+  "update_username_btn": "UPDATE"
 }

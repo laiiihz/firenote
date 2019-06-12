@@ -40,5 +40,11 @@
   "reminder_time": "提醒时间:",
   "update_note": "更新备忘",
   "update_time": "更新时间:",
-  "all_group": "所有"
+  "all_group": "所有",
+  "group_name": "分组名称",
+  "cancel": "取消",
+  "add_group_btn": "添加",
+  "update_username": "修改用户名",
+  "username": "用户名",
+  "update_username_btn": "修改"
 }

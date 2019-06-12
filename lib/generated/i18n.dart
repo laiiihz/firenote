@@ -20,11 +20,13 @@ class S implements WidgetsLocalizations {
   TextDirection get textDirection => TextDirection.ltr;
 
   String get add_group => "add group";
+  String get add_group_btn => "ADD";
   String get all_group => "GROUP ALL";
   String get appName => "FireNote";
   String get blue => "blue";
   String get blue_grey => "blue_grey";
   String get blue_with_green => "blue_with_green";
+  String get cancel => "CANCEL";
   String get choose_color => "choose color";
   String get clear_all_note => "clear all note";
   String get create_note => "new note";
@@ -35,6 +37,7 @@ class S implements WidgetsLocalizations {
   String get experiment_settings => "experiment_settings";
   String get green => "green";
   String get grey => "grey";
+  String get group_name => "GROUP NAME";
   String get honey => "honey";
   String get immersive_mode => "IMMERSIVE MODE";
   String get immersive_mode_off => "IMMERSIVE MODE OFF";
@@ -60,6 +63,9 @@ class S implements WidgetsLocalizations {
   String get title_note => "TITLE";
   String get update_note => "update note";
   String get update_time => "update time:";
+  String get update_username => "UPDATE USERNAME";
+  String get update_username_btn => "UPDATE";
+  String get username => "USERNAME";
   String get welcome_and_use => "Welcome";
 }
 
@@ -73,6 +79,8 @@ class $zh extends S {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
+  @override
+  String get cancel => "取消";
   @override
   String get theme_color => "主题色";
   @override
@@ -106,6 +114,8 @@ class $zh extends S {
   @override
   String get experiment_settings => "实验性功能";
   @override
+  String get update_username_btn => "修改";
+  @override
   String get reminder_time => "提醒时间:";
   @override
   String get night_mode_on => "开启夜间模式";
@@ -113,6 +123,8 @@ class $zh extends S {
   String get green => "绿色";
   @override
   String get choose_color => "选择颜色";
+  @override
+  String get group_name => "分组名称";
   @override
   String get appName => "FireNote";
   @override
@@ -157,6 +169,12 @@ class $zh extends S {
   String get immersive_mode_off => "关闭沉浸模式";
   @override
   String get pop_settings => "设置";
+  @override
+  String get update_username => "修改用户名";
+  @override
+  String get add_group_btn => "添加";
+  @override
+  String get username => "用户名";
 }
 
 class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {

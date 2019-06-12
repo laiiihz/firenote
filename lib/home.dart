@@ -173,7 +173,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                                 children: <Widget>[
                                                   ListTile(
                                                     title: Text(
-                                                      '修改用户名',
+                                                      S.of(context).update_username,
                                                       style: TextStyle(
                                                           fontSize: 25),
                                                     ),
@@ -182,7 +182,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                                     controller:
                                                         _userNameController,
                                                     decoration: InputDecoration(
-                                                      labelText: '用户名',
+                                                      labelText: S.of(context).username,
                                                       filled: true,
                                                     ),
                                                     maxLength: 10,
@@ -194,7 +194,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                                           Navigator.pop(
                                                               context);
                                                         },
-                                                        child: Text('取消'),
+                                                        child: Text(S.of(context).cancel),
                                                       ),
                                                       RaisedButton(
                                                         onPressed: () {
@@ -218,7 +218,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                                           Navigator.pop(
                                                               context);
                                                         },
-                                                        child: Text('修改'),
+                                                        child: Text(S.of(context).update_username_btn),
                                                         color:
                                                             model.primaryColor,
                                                       ),
@@ -399,7 +399,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                           builder: (context) {
                             return AlertDialog(
                               shape: null,
-                              title: Text('添加分组'),
+                              title: Text(S.of(context).add_group),
                               content: Container(
                                 padding: EdgeInsets.all(10),
                                 child: Column(
@@ -407,7 +407,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                   children: <Widget>[
                                     TextField(
                                       decoration: InputDecoration(
-                                        labelText: '分组名称',
+                                        labelText: S.of(context).group_name,
                                         prefixIcon: Icon(Icons.group_add),
                                         filled: true,
                                       ),
@@ -420,7 +420,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                           onPressed: () {
                                             Navigator.pop(context);
                                           },
-                                          child: Text('取消'),
+                                          child: Text(S.of(context).cancel),
                                         ),
                                         RaisedButton(
                                           onPressed: () {
@@ -429,7 +429,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                             _groupTagController.clear();
                                             Navigator.pop(context);
                                           },
-                                          child: Text('添加'),
+                                          child: Text(S.of(context).add_group_btn),
                                           color: model.primaryColor,
                                         ),
                                       ],
